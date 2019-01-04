@@ -7,26 +7,24 @@ import { Util } from '../../utils/Util';
 import { UIUtil } from "../../utils/UIUtil";
 import { Redirect } from "react-router-dom";
 
-import "./UpdatePwd.css"
-
-interface UpdatePwdProps {
+interface UpdataPwdProps {
     history: History
 }
 
-interface UpdatePwdState {
+interface UpdataPwdState {
     codeCountDown: number,
     redirectToLogin: boolean,
     changeL:boolean
 }
 
-export class UpdatePwd extends React.Component<UpdatePwdProps, UpdatePwdState> {
+export class UpdataPwd extends React.Component<UpdataPwdProps, UpdataPwdState> {
     codeCountDownTimer: number
     phone?: string
     code?: string
     password?: string
     confirmPassword?: string
 
-    constructor(props: UpdatePwdProps) {
+    constructor(props: UpdataPwdProps) {
         super(props)
         this.codeCountDownTimer = 0
         this.state = {
@@ -63,7 +61,11 @@ export class UpdatePwd extends React.Component<UpdatePwdProps, UpdatePwdState> {
     }
 
     onConfirmPasswordBlur = (value: string) => {
-        this.confirmPassword = value
+        const confirmPasswordInfo = "密码与确认密码不一致"
+        if(value != this.password){
+            Toast.info(confirmPasswordInfo)
+            return
+        }
     }
 
     getCode = () => {
@@ -106,7 +108,6 @@ export class UpdatePwd extends React.Component<UpdatePwdProps, UpdatePwdState> {
         const codeInfo = "请输入验证码"
        
         const passwordInfo = "请输入不少于6位长度的密码"
-        const confirmPasswordInfo = "密码与确认密码不一致"
         if (!this.phone) {
             Toast.info(info)
             return
@@ -130,16 +131,7 @@ export class UpdatePwd extends React.Component<UpdatePwdProps, UpdatePwdState> {
             Toast.info(passwordInfo)
             return 
         }
-        if (!this.confirmPassword) {
-            Toast.info(confirmPasswordInfo)
-            return
-        }
-        const trimConfrimPassword = Util.trim(this.confirmPassword!)
-        if (trimPassword !== trimConfrimPassword) {
-            Toast.info(confirmPasswordInfo)
-            return
-        }
-        UserService.Instance.updatePassword(trimPhone, trimCode, trimPassword, trimConfrimPassword).then( () => {
+        UserService.Instance.updatePassword(trimPhone, trimCode, trimPassword).then( () => {
             const alert = Modal.alert
             alert('提示','修改密码成功，请重新登录',[{ text:'ok', style: 'default', onPress: () => {
                 this.setState({
@@ -166,7 +158,7 @@ export class UpdatePwd extends React.Component<UpdatePwdProps, UpdatePwdState> {
             return <Redirect to={to} />
         }
         return (
-            <div className="fans-container updataPwd">
+            <div className="fans-container updatapwd">
                 <NavBar icon={<Icon type="left" />} 
                     onLeftClick={ this.onRedirectBack}
                     className="home-navbar" >
@@ -189,8 +181,10 @@ export class UpdatePwd extends React.Component<UpdatePwdProps, UpdatePwdState> {
                 </List>
                 <WhiteSpace size="lg" />
                 <WhiteSpace size="lg" />
-                <div className="fans-footer">
-                    <Button onClick={this.onSubmit}>修改密码</Button>
+                <div className="registered_button">
+                    <List className="content-item">
+                        <Button type="ghost" className="registered_confirm" onClick={this.onSubmit}>修改密码</Button>
+                    </List>
                 </div>
             </div>
         )

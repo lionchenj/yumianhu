@@ -12,7 +12,9 @@ import { Settings } from "./pages/settings/Settings";
 import { ForgetPwd } from "./pages/forgetPwd/ForgetPwd";
 import { friendList } from "./pages/friendList/friendList";
 import { datingrecord } from "./pages/datingrecord/datingrecord";
-import { undetermined } from "./pages/undetermined/undetermined";
+import { friendsUn } from "./pages/friendsUn/friendsUn";
+import { friendsLog } from "./pages/friendsLog/friendsLog";
+import { UpdataPwd } from "./pages/updataPwd/UpdataPwd";
 // const NotFound = () => (
 //   <div> Sorry, this page does not exist. </div>
 // )
@@ -29,8 +31,10 @@ class App extends React.Component {
           <Route path="/forget_pwd" component={ForgetPwd} />
           <PrivateRoute path="/friendList" component={friendList} />
           <PrivateRoute path="/datingrecord" component={datingrecord} />
-          <PrivateRoute path="/undetermined" component={undetermined} />
-          <Route component={Home} />
+          <PrivateRoute path="/friendsUn" component={friendsUn} />
+          <PrivateRoute path="/friendsLog" component={friendsLog} />
+          <PrivateRoute path="/updata_pwd" component={UpdataPwd} />
+          <PrivateRoute component={Home} />
       </Switch>
     );
   }

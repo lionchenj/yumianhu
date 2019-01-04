@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { History, Location } from "history";
 import { Redirect, Link } from "react-router-dom";
-import { Flex, List, InputItem, Button, Toast, WhiteSpace } from "antd-mobile";
+import { List, InputItem, Button, Toast, WhiteSpace } from "antd-mobile";
+
+import phone from "../../assets/login_phone.png"
+import pwd from "../../assets/login_pwd.png"
 
 // import { UserStorage } from "../../storage/UserStorage";
 // import  createForm  from "rc-form";
@@ -22,8 +25,6 @@ export interface LoginProps {
 
 interface LoginState {
     redirectToReferrer: boolean,
-    redirectToRegister: boolean,
-    changeL: boolean,
     activate: boolean
 }
 
@@ -34,9 +35,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
     constructor(props: LoginProps) {
         super(props)
         this.state = {
-            changeL: true,
             redirectToReferrer: false,
-            redirectToRegister: false,
             activate: false
         }
     }
@@ -44,24 +43,11 @@ export class Login extends React.Component<LoginProps, LoginState> {
     navToRegister = () => {
         this.setState( {
             redirectToReferrer: false,
-            redirectToRegister: true
         })
     }
-
-    changeCn = () => {
-        this.setState({
-            changeL: true
-        })
-}
-changeEn = () => {
-    this.setState({
-        changeL: false
-    })
-}
     onPhoneBlur = (value: string) => {
         this.phone = value
     }
-
     onPasswordBlur = (value: string) => {
         this.password = value
     }
@@ -99,11 +85,6 @@ changeEn = () => {
         }).catch( err => {
             const message = (err as Error).message;
             Toast.fail(message);
-            if(message == "该账号需新的激活码才能登录"){
-                this.setState({
-                    activate: true
-                })
-            }
         })
     }
 
@@ -112,62 +93,46 @@ changeEn = () => {
     }
 
     public render() {
-        const { redirectToReferrer, redirectToRegister} = this.state
+        const { redirectToReferrer} = this.state
         if (redirectToReferrer) {
             const to = {
                 pathname: "/home"
             }
             return <Redirect to={to} />
         }
-        if (redirectToRegister) {
-            const to = {
-                pathname: "/register"
-            }
-            return <Redirect to={to} />
-        }
+        // if (redirectToRegister) {
+        //     const to = {
+        //         pathname: "/register"
+        //     }
+        //     return <Redirect to={to} />
+        // }
 
         
         return (
             <div className="login-container">
-                
-                <Flex direction="column">
-                <div className="change-language">
-                        <div className="code-button" onClick={this.changeEn}>English</div>
-                        <div className="code-button" onClick={this.changeCn}>中文</div>
-                    </div>
-                    <div className="header">
-                        <div>
-                            <div className="logo" ></div>
-                        </div>
-                        <div className="app-title"></div>
-                        <div className="app-subtitle" ></div>
-                    </div> 
-                    <div className="content">
-                        <List className="content-item-border">
-                            <InputItem type="number" maxLength={11} placeholder={this.state.changeL?"请输入手机号":"Your phone number"} onBlur={this.onPhoneBlur}></InputItem>
+                    <div className="login_content">
+                        <List className="login_border">
+                        <List.Item thumb= {phone}>
+                        <InputItem type="number" maxLength={11} placeholder="请输入手机号" onBlur={this.onPhoneBlur}></InputItem>
+                        </List.Item>
                         </List>
-                        <List className="content-item-border">
-                            <InputItem type="password" placeholder={this.state.changeL?"请输入登录密码":"Password"} onBlur={this.onPasswordBlur}></InputItem>
+                        <List className="login_border">
+                        <List.Item thumb= {pwd}>
+                        <InputItem type="password" placeholder="请输入登录密码" onBlur={this.onPasswordBlur}></InputItem>
+                        </List.Item>
                         </List>
-                        <List className={this.state.activate?"content-item-border":"content-item-border none"}>
-                            <InputItem type="text" placeholder={this.state.changeL?"请输入激活码":"Activation coder"} onBlur={this.onActivationBlur}></InputItem>
-                        </List>
-                        <List className="content-item">
-                            <Link to="/forget_pwd" className="forget-link" >{this.state.changeL?"忘记密码":"Forgot password？"}</Link>
+                        <List className="login_forget">
+                            <Link to="/forget_pwd" className="forget-link" >忘记密码？</Link>
                         </List>
                         <WhiteSpace size="lg" />
                         <WhiteSpace size="lg" />
-                        <div className="button">
+                        <div className="login_button">
                             <List className="content-item">
-                                <Button className="login-button" onClick={this.onSubmit} >{this.state.changeL?"立即登陆":"Login"}</Button>
-                            </List>
-                            <List className="content-item">
-                                <Button type="ghost" className="register-button" onClick={this.navToRegister} >{this.state.changeL?"立即注册":"Register"}</Button>
+                                <Button type="ghost" className="login_confirm" onClick={this.onSubmit}>登陆</Button>
                             </List>
                         </div>
                     </div>
                     
-                </Flex>
             </div>
 
         )

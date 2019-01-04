@@ -50,10 +50,10 @@
     "style-loader": "^0.22.1",
     "typescript": "^2.9.2"
   },
-  "homepage": "http://www.ktwo123.com/",
+  "homepage": "https://dev170.weibanker.cn/chenjj/www/shuaishou/",
   "proxy": {
     "/shadow/vatc/*": {
-      "target": "http://www.ktwo123.com/",
+      "target": "https://dev170.weibanker.cn/chenjj/www/shuaishou/",
       "secure": false,
       "changeOrigin": true
     }

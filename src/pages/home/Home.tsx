@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TabBar, List, NavBar, Modal} from "antd-mobile";
 import { History, Location } from "history";
-// import { UserStorage } from "../../storage/UserStorage";
+import { UserStorage } from "../../storage/UserStorage";
 import "./Home.css"
 
 import registered from "../../assets/icon_registered.png"
@@ -38,11 +38,11 @@ interface HomeState {
     userInfo: any,
     list: any,
     index: number,
+    levelupF: any,
     friends: any,
     showKey: boolean,
     isFollow: boolean
 }
-console.log(window.innerHeight)
 const pageheight = window.innerHeight-95;
 export class Home extends React.Component<HomeProps, HomeState> {
     rData: any
@@ -52,7 +52,6 @@ export class Home extends React.Component<HomeProps, HomeState> {
     min:number
     max:number
     interva: any
-    
     constructor(props: HomeProps) {
         super(props)
          //   const dataSource = new ListView.DataSource({
@@ -61,11 +60,12 @@ export class Home extends React.Component<HomeProps, HomeState> {
         this.state = {
             selectedTab: "HomeTab",
             userInfo:'',
+            levelupF: [],
             list: [],
             friends: [{img_path:defaults,name:'谁谁谁',level:'2'}],
             index: 0,
             showKey: false,
-            isFollow: false
+            isFollow: false,
         }
     }
 
@@ -76,11 +76,27 @@ export class Home extends React.Component<HomeProps, HomeState> {
         if (index == 0) {
             this.props.history.push("/registered");
         } else if (index == 1) {
-            this.setState({ showKey: true });
+            //关注列表
+            UserService.Instance.focusFriendsList().then( res => {
+                let levelupF = [];
+                console.log(res)
+                levelupF = res;
+                    levelupF.map((res:any)=>{
+                        res.follow?'':res.follow = 0;
+                })
+                console.log(levelupF)
+                this.setState({
+                        ...this.state,
+                        levelupF:levelupF
+                })
+                this.setState({ showKey: true });
+            }).catch ( err => {
+                
+            })
         } else if (index == 2) {
-            this.props.history.push("/undetermined");
+            this.props.history.push("/friendsUn");
         } else if (index == 3) {
-            this.props.history.push("/friendList");
+            this.props.history.push("/friendsLog");
         }
     }
     onClose = () => {
@@ -88,13 +104,28 @@ export class Home extends React.Component<HomeProps, HomeState> {
             showKey: false
         })
     }
+    //关注
     onFollow = (e:any) => {
         let index = e.currentTarget.dataset.id;
         console.log(index)
-        let isFollow = this.state.isFollow;
-        this.setState({
-            isFollow:!isFollow
+        UserService.Instance.focusFriends(index).then( avatarUrl => {
+            let levelupF = this.state.levelupF;
+            levelupF.map((res:any)=>{
+                if(index == res.mobile){
+                    res.status = '0'
+                }
+            })
+            this.setState({
+                levelupF:levelupF
+            })
+        }).catch( err => {
+            UIUtil.showError(err)
         })
+    }
+    //登出
+    onLogout = () => {
+        UserStorage.clearAccessToken();
+        this.props.history.push("/login");
     }
     onAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.preventDefault()
@@ -105,6 +136,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
         UIUtil.showLoading("上传中")
         UserService.Instance.updateHead(files[0]).then( avatarUrl => {
             const userInfo = this.state.userInfo
+            console.log(avatarUrl)
             if (userInfo) {
                 userInfo.head_imgurl = avatarUrl
                 this.setState({
@@ -116,6 +148,17 @@ export class Home extends React.Component<HomeProps, HomeState> {
             UIUtil.showError(err)
         })
     }
+    //好友列表
+    getFriendsList = () => {
+        UserService.Instance.myFriendsList().then( list => {
+                this.setState({
+                    ...this.state,
+                    list: list
+                })
+        }).catch ( err => {
+            
+        })
+    }
     public componentDidUpdate() {
 
     }
@@ -123,46 +166,65 @@ export class Home extends React.Component<HomeProps, HomeState> {
         
     }
     public componentDidMount() {
-        UserService.Instance.getUserInfo().then( userInfo => {
-            if (userInfo.errmsg) {
-                this.props.history.push("/login");
-                return;
-            }else{
+        UserService.Instance.getUserInfo().then( userInfo => {this.getFriendsList();
                 this.setState({
                     ...this.state,
                     userInfo: userInfo
                 })
-            }
         }).catch ( err => {
-            
+            console.log(err.errmsg)
         })
     }
     
 
     public render() {
         let list = [];
-        for(var i=0;i<3;i++){
-            list.push( <div className="index_modal_list" key={i}>
-            <div className="head_img">
-                <img src={defaults} />
-            </div>
-            <div className="friends_info">
-                <div className="text">'某某某'</div>
-                <div className="text">12312312345</div>
-                <div className="text">
-                    <div className="level_img">
-                        <img src={king} alt=""/>
-                    </div>
-                    <span>0等级</span>
+        if(this.state.levelupF.length != 0){
+            for(var i=0;i<3;i++){
+                list.push( <div className="index_modal_list" key={i}>
+                <div className="head_img">
+                    <img src={this.state.levelupF[i].head_imgurl} />
                 </div>
-                <div className="text index_follow" data-id={i} onClick={this.onFollow}>
-                    <div className="level_img">
-                        <img src={this.state.isFollow?follow:follow_n} alt=""/>
+                <div className="friends_info">
+                    <div className="text">{this.state.levelupF[i].nickname}</div>
+                    <div className="text">{this.state.levelupF[i].mobile}</div>
+                    <div className="text">
+                        <div className="level_img">
+                            <img src={king} alt=""/>
+                        </div>
+                        <span>{this.state.levelupF[i].level}等级</span>
                     </div>
-                    <span>{this.state.isFollow?'已关注':'未关注'}</span>
+                    <div className="text index_follow" data-id={this.state.levelupF[i].mobile} onClick={this.onFollow}>
+                        <div className="level_img">
+                            <img src={this.state.levelupF[i].status != '1'?follow:follow_n} alt=""/>
+                        </div>
+                        <span>{this.state.levelupF[i].status != '1'?'已关注':'未关注'}</span>
+                    </div>
                 </div>
-            </div>
-        </div>)
+            </div>)
+            }
+        }
+        
+        let friendsList = [];
+        if(this.state.list.length != 0){
+            for(var i=0;i<this.state.list.length;i++){
+                friendsList.push(
+                    <div className="friend_list" key={i}>
+                        <div className="head_img">
+                            <img src={this.state.list[i].head_imgurl != ''?this.state.list[i].head_imgurl:defaults} />
+                        </div>
+                        <div className="friends_info">
+                            <div className="name">{this.state.list[i].nickname != ''?this.state.list[i].nickname:'某某某'}</div>
+                            <div className="level">
+                                <div className="level_img">
+                                    <img src={king} alt=""/>
+                                </div>
+                                <span>{this.state.list[i].level != ''?this.state.list[i].level:'0'}等级</span>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
         }
         
         //   const separator = (sectionID: number, rowID: number) => (
@@ -244,27 +306,9 @@ export class Home extends React.Component<HomeProps, HomeState> {
 
                                     
                                     <List className="bg_w"><List.Item>我的好友</List.Item></List>
-                                    <div className="viewheight"></div>
-                                    {/* <ListView
-                                        ref={el => this.lv = el}
-                                        dataSource={this.state.dataSource}
-                                        renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-                                        {this.state.isLoading ? 'Loading...' : ''}
-                                        </div>)}
-                                        renderRow={row}
-                                        renderSeparator={separator}
-                                        className="viewheight am-list bg_w"
-                                        pageSize={3}
-                                        // useBodyScroll
-                                        onScroll={() => { console.log('scroll'); }}
-                                        scrollRenderAheadDistance={500}
-                                        onEndReached={this.onEndReached}
-                                        onEndReachedThreshold={10}
-                                        style={{
-                                            height: this.state.height,
-                                            overflow: 'auto',
-                                        }}
-                                    /> */}
+                                    <List className="index_friends_list bg_w">
+                                        {friendsList}
+                                    </List>
                                </div>
                             </TabBar.Item>
                             
@@ -305,15 +349,19 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                         <div className="my_info_container">
                                             <div className="my_nickname">{this.state.userInfo && this.state.userInfo.nickname}</div>
                                             <div className="my_phone">{this.state.userInfo && this.state.userInfo.mobile}</div>
+                                            <div className="my_level">
+                                                <img src={king} alt=""/>
+                                                <span>{this.state.userInfo && this.state.userInfo.level}等级</span>
+                                            </div>
                                         </div>
                                         <div className="my_info_friends after">
                                             <div className="my_friends">
                                                 <div>我的好友</div>
-                                                <div>99</div>
+                                                <div>{this.state.userInfo && this.state.userInfo.friends_count}</div>
                                             </div>
                                             <div className="my_friends">
                                                 <div>待通过</div>
-                                                <div>1</div>
+                                                <div>{this.state.userInfo && this.state.userInfo.stay_by}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -341,7 +389,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                             onClick={()=>{
                                                 const alert = Modal.alert
                                                 alert('提示','是否确认退出',[
-                                                    { text: '是', onPress: () => {} },
+                                                    { text: '是', onPress: () => {this.onLogout()} },
                                                     { text: '否', onPress: () => {} }
                                                 ])
                                             }}

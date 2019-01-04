@@ -2,15 +2,14 @@ const AccessTokenKey = "User.AccessTokenKey";
 
 export class UserStorage {
   static saveAccessToken(token: string) {
-      this.setCookie(AccessTokenKey, token)
-    UserStorage.setCookie(AccessTokenKey, token);
+      this.setCookie(AccessTokenKey, token);
   }
   static getAccessToken(): string | null {
     window;
     return UserStorage.getCookie(AccessTokenKey);
   }
-
   static clearAccessToken() {
+    this.delCookie(AccessTokenKey);
     window.localStorage.removeItem(AccessTokenKey);
   }
   //写cookies
@@ -34,7 +33,16 @@ export class UserStorage {
     var exp = new Date();
     exp.setTime(exp.getTime() - 1);
     var cval = this.getCookie(name);
-    if (cval != null)
-      document.cookie = name + "=" + cval + ";expires=" + exp.toUTCString();
+    if (cval != null){document.cookie = name + "=" + cval + ";expires=" + exp.toUTCString();}
+  }
+  //清除cookies
+  static clearCookie() {
+    var date=new Date();
+    date.setTime(date.getTime()-10000);
+    var keys=document.cookie.match(/[^ =;]+(?=\=)/g);
+    if (keys) {
+        for (var i =  keys.length; i--;)
+          document.cookie=keys[i]+"=0; expire="+date.toUTCString()+"; path=/";
+    }
   }
 }

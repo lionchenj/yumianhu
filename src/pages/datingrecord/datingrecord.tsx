@@ -30,7 +30,6 @@ interface datingrecordState {
     coins:any
 }
 const bodyHeight = (window.innerHeight/100 - 0.45) + 'rem';
-console.log(bodyHeight)
 export class datingrecord extends React.Component<datingrecordProps, datingrecordState> {
     rData: any
     lv: any

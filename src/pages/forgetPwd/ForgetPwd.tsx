@@ -1,13 +1,12 @@
 import * as React from 'react';
 
-import { Flex, NavBar, Icon, List, InputItem, Button, WhiteSpace, Toast, Modal} from "antd-mobile";
+import { List, InputItem, Button, WhiteSpace, Toast, Modal} from "antd-mobile";
 import { History } from "history";
 import { UserService } from '../../service/UserService';
 import { Util } from '../../utils/Util';
 import { UIUtil } from "../../utils/UIUtil";
 import { Redirect } from "react-router-dom";
 
-import "./ForgetPwd.css"
 
 interface ForgetPwdProps {
     history: History
@@ -63,7 +62,11 @@ export class ForgetPwd extends React.Component<ForgetPwdProps, ForgetPwdState> {
     }
 
     onConfirmPasswordBlur = (value: string) => {
-        this.confirmPassword = value
+        const info = "密码与确认密码不一致"
+        if(value != this.password){
+            Toast.info(info)
+            return
+        }
     }
 
     getCode = () => {
@@ -106,7 +109,6 @@ export class ForgetPwd extends React.Component<ForgetPwdProps, ForgetPwdState> {
         const codeInfo = "请输入验证码"
        
         const passwordInfo = "请输入不少于6位长度的密码"
-        const confirmPasswordInfo = "密码与确认密码不一致"
         if (!this.phone) {
             Toast.info(info)
             return
@@ -130,16 +132,7 @@ export class ForgetPwd extends React.Component<ForgetPwdProps, ForgetPwdState> {
             Toast.info(passwordInfo)
             return 
         }
-        if (!this.confirmPassword) {
-            Toast.info(confirmPasswordInfo)
-            return
-        }
-        const trimConfrimPassword = Util.trim(this.confirmPassword!)
-        if (trimPassword !== trimConfrimPassword) {
-            Toast.info(confirmPasswordInfo)
-            return
-        }
-        UserService.Instance.updatePassword(trimPhone, trimCode, trimPassword, trimConfrimPassword).then( () => {
+        UserService.Instance.updatePassword(trimPhone, trimCode, trimPassword).then( () => {
             const alert = Modal.alert
             alert('提示','修改密码成功，请重新登录',[{ text:'ok', style: 'default', onPress: () => {
                 this.setState({
@@ -166,47 +159,31 @@ export class ForgetPwd extends React.Component<ForgetPwdProps, ForgetPwdState> {
             return <Redirect to={to} />
         }
         return (
-            <div className="login-container updataPwd">
-                <NavBar icon={<Icon type="left" />} 
-                    onLeftClick={ this.onRedirectBack}
-                    className="navbar" >
-                        {/* <div className="nav-title">修改密码</div> */}
-                </NavBar>
-                <Flex direction="column">
-                    <div className="change-language">
-                        <div className="code-button" onClick={this.changeEn}>English</div>
-                        <div className="code-button" onClick={this.changeCn}>中文</div>
+            <div className="login-container">
+                <div className="login_content">
+                    <List className="login_border">
+                        <InputItem type="digit" maxLength={11}  placeholder="请输入手机号" onBlur={this.onPhoneBlur}></InputItem>
+                    </List>
+                    <List className="login_border">
+                        <InputItem placeholder="请输入短信验证码" onBlur={this.onCodeBlur}
+                            extra={<Button disabled={this.state.codeCountDown > 0} type="ghost" size="small" className="code-button" >{ this.state.codeCountDown > 0 ? this.state.codeCountDown: "获取验证码"}</Button>}
+                            onExtraClick={ this.state.codeCountDown > 0 ? undefined : this.getCode}>
+                        </InputItem>
+                    </List>
+                    <List className="login_border">
+                        <InputItem type="password" placeholder="请输入登录密码" onBlur={this.onPasswordBlur}></InputItem>
+                    </List>
+                    <List className="login_border">
+                        <InputItem type="password" placeholder="请确认登录密码" onBlur={this.onConfirmPasswordBlur}></InputItem>
+                    </List>
+                    <WhiteSpace size="lg" />
+                    <WhiteSpace size="lg" />
+                    <div className="login_button">
+                        <List className="content-item">
+                            <Button type="ghost" className="login_confirm" onClick={this.onSubmit}>确认</Button>
+                        </List>
                     </div>
-                    <div className="register-header" >
-                        <div>
-                            <div className="logo"></div>
-                        </div>
-                        <div className="app-title"></div>
-                        <div className="app-subtitle" ></div>
-                    </div>
-                    <div className="content">
-                        <List className="content-item-border">
-                            <InputItem type="digit" maxLength={11}  placeholder={this.state.changeL?"请输入手机号":"Your phone number"} onBlur={this.onPhoneBlur}></InputItem>
-                        </List>
-                        <List className="content-item-border">
-                            <InputItem placeholder={this.state.changeL?"请输入短信验证码":"SMS code"} onBlur={this.onCodeBlur}
-                                extra={<Button disabled={this.state.codeCountDown > 0} type="ghost" size="small" className="code-button" >{ this.state.codeCountDown > 0 ? this.state.codeCountDown: (this.state.changeL?"获取验证码":"Get code")}</Button>}
-                                onExtraClick={ this.state.codeCountDown > 0 ? undefined : this.getCode}>
-                            </InputItem>
-                        </List>
-                        <List className="content-item-border">
-                            <InputItem type="password" placeholder={this.state.changeL?"请输入登录密码":"Password"} onBlur={this.onPasswordBlur}></InputItem>
-                        </List>
-                        <List className="content-item-border">
-                            <InputItem type="password" placeholder={this.state.changeL?"请确认登录密码":"Confirm Password"} onBlur={this.onConfirmPasswordBlur}></InputItem>
-                        </List>
-                        <WhiteSpace size="lg" />
-                        <WhiteSpace size="lg" />
-                        <div className="button">
-                            <Button className="login-button" onClick={this.onSubmit}>{this.state.changeL?"修改密码":"Modify"}</Button>
-                        </div>
-                    </div>
-                </Flex>
+                </div>
             </div>
         )
     }

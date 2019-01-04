@@ -24,26 +24,25 @@ export class UserService extends ServiceBase {
         }
         return false
     }
-
+    //获取手机验证码
     public async getMobileMassges(mobile: string): Promise<void> {
         const params = {
             mobile: mobile
         }
         return await this.httpPost("get_mobile_massges", params, false)
-        
     }
-
-    public async register(mobile: string, code: string, shareMobile: string, password: string, register_code:string): Promise<void> {
+    //注册
+    public async register(mobile: string, code: string, name: string, password: string, wechat_number:string): Promise<void> {
         const params = {
             mobile: mobile,
             password: password,
             verification_code: code,
-            referee: shareMobile,
-            register_code: register_code
+            name: name,
+            wechat_number: wechat_number
         }
-        return await this.httpPost("register", params, false)
+        return await this.httpPost("register", params, true)
     }
-
+    //登陆
     public async login(mobile: string, password: string, activation_code?: string): Promise<void> {
         const params = {
             mobile: mobile,
@@ -55,12 +54,12 @@ export class UserService extends ServiceBase {
         ServiceBase.accessToken = accessToken
         UserStorage.saveAccessToken(accessToken)
     }
-
+    //登出
     public logout() {
         ServiceBase.accessToken = ""
         UserStorage.clearAccessToken()
     }
-
+    //获取用户信息
     public async getUserInfo(): Promise<model.User> {
         const resp = await this.httpPost("getUserInfo")
         if(resp.data){
@@ -69,13 +68,12 @@ export class UserService extends ServiceBase {
             return resp
         }
     }
-
-    public async updatePassword(mobile: string, code: string, password: string, repassword:string): Promise<void> {
+    //修改/忘记密码
+    public async updatePassword(mobile: string, code: string, password: string): Promise<void> {
         const params = {
             mobile: mobile,
             password: password,
-            verification_code: code,
-            repassword: repassword
+            verification_code: code
         }
         return await this.httpPost("retrievePassword", params, false)
     }
@@ -89,54 +87,39 @@ export class UserService extends ServiceBase {
         await this.httpPost("updateHead", params)
         return headImgUrl
     }
-    
-
-    public async feedback(content: string, imagesList: Array<File>): Promise<void> {
-        const imagePathList = new Array<string>()
-        for (const imageFile of imagesList) {
-            const path = await this.uploadFile(imageFile)
-            imagePathList.push(path)
-        }
-
-        const params = {
-            content: content,
-            imagesList: imagePathList.join(",")
-        }
-        return await this.httpPost("feedback", params)
-    }
-
+    //统一上传
     public async uploadFile(file: File): Promise<string> {
         const resp = await this.httpUpload(file)
         console.log("uploadFile", resp)
-        return resp.data.data.path + resp.data.path as string
+        return resp.data.data.path as string
     }
-
-    public async signIn(): Promise<void> {
-        return await this.httpPost("signIn")
+    //好友列表
+    public async myFriendsList(): Promise<any> {
+        const resp = await this.httpPost("myFriendsList");
+        return resp.data as model.FriendsList
     }
-
-    public async isSignIn(): Promise<boolean> {
-
-        const resp = await this.httpPost("isSignIn")
-        return resp.data.status as boolean
+    //升级列表
+    public async focusFriendsList(): Promise<any> {
+        const resp = await this.httpPost("focusFriendsList")
+        return resp.data as model.FriendsList
     }
-    //银行卡
-    public async listPayment(): Promise<void> {
-        return await this.httpPost("listPayment")
-    }
-    //新增银行卡
-    public async addPayment(bank_name: string, account:string): Promise<void> {
+    //关注
+    public async focusFriends(mobile: string): Promise<void> {
         const params = {
-            bank_name:bank_name,
-            account:account
+            mobile:mobile
         }
-        return await this.httpPost("addPayment", params, true)
+        return await this.httpPost("focusFriends", params, true)
     }
-    //删除银行卡
-    public async deletePayment(account:string): Promise<void> {
+    //待接受好友列表
+    public async checkFriendsList(): Promise<any> {
+        const resp = await this.httpPost("checkFriendsList");
+        return resp.data as model.FriendsList
+    }
+    //接受好友
+    public async checkFriends(mobile: string): Promise<void> {
         const params = {
-            account:account
+            mobile:mobile
         }
-        return await this.httpPost("deletePayment", params, true)
+        return await this.httpPost("checkFriends", params, true)
     }
 }

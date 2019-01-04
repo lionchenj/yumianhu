@@ -23,11 +23,11 @@ interface registeredState {
 
 export class registered extends React.Component<Props, registeredState> {
     codeCountDownTimer: number
-    phone?: string
-    code?: string
-    onWeiXin?: string
-    password?: string
-    activation?: string
+    phone: string
+    code: string
+    onWeiXin: string
+    password: string
+    name: string
     constructor(props: Props) {
         super(props)
         this.codeCountDownTimer = 0
@@ -62,22 +62,21 @@ export class registered extends React.Component<Props, registeredState> {
         this.code = value
     }
 
-    onSharePhoneBlur = (value: string) => {
+    onWeiXinBlur = (value: string) => {
         this.onWeiXin = value
     }
 
     onPasswordBlur = (value: string) => {
         this.password = value
     }
-    onActivationBlur = (value: string) => {
-        this.activation = value
+    onNameBlur = (value: string) => {
+        this.name = value
     }
     onSubmit = () => {
         const info = "请输入11位手机号码"
         const codeInfo = "请输入验证码"
-        const onWeiXinInfo = "分享人手机号码格式不正确"
         const passwordInfo = "请输入不少于6位长度的密码"
-        const activationInfo = "请输入激活码"
+        const nameInfo = "请输入姓名"
         if (!this.phone) {
             Toast.info(info)
             return
@@ -92,14 +91,7 @@ export class registered extends React.Component<Props, registeredState> {
             return
         }
         const trimCode = Util.trim(this.code!)
-        let trimSharePhone = ""
-        if (this.onWeiXin) {
-            trimSharePhone = Util.trim(this.onWeiXin!)
-            if (!Util.validPhone(trimSharePhone)) {
-                Toast.info(onWeiXinInfo)
-                return
-            }
-        }
+        
         if (!this.password) {
             Toast.info(passwordInfo)
             return
@@ -109,13 +101,11 @@ export class registered extends React.Component<Props, registeredState> {
             Toast.info(passwordInfo)
             return 
         }
-        if (!this.activation) {
-            Toast.info(activationInfo)
+        if (!this.name) {
+            Toast.info(nameInfo)
             return
         }
-        const trimActivation = Util.trim(this.activation!)
-
-        UserService.Instance.register(trimPhone, trimCode, trimSharePhone, trimPassword, trimActivation).then( () => {
+        UserService.Instance.register(trimPhone, trimCode, this.name, trimPassword, this.onWeiXin).then( () => {
             const alert = Modal.alert
             alert('提示','注册成功',[{ text:'ok',onPress: () => console.log('ok'),style: 'default' }])
             this.setState({
@@ -193,7 +183,7 @@ export class registered extends React.Component<Props, registeredState> {
                 <NavBar mode="light" icon={<Icon type="left" color="#fff" />} onLeftClick={this.navBack} >代理注册</NavBar>
                     <div className="content">
                         <List className="content-item-border">
-                            <InputItem type="text" placeholder={"请输入姓名"} onBlur={this.onActivationBlur} >姓名</InputItem>
+                            <InputItem type="text" placeholder={"请输入姓名"} onBlur={this.onNameBlur} >姓名</InputItem>
                         </List>
                         <List className="content-item-border">
                             <InputItem name="phone" type="number" maxLength={11} placeholder={"请输入手机号"} onBlur={this.onPhoneBlur}>手机号</InputItem>
@@ -207,14 +197,14 @@ export class registered extends React.Component<Props, registeredState> {
                             </InputItem>
                         </List>
                         <List className="content-item-border">
-                            <InputItem type="text" placeholder={"请输入微信号"} onBlur={this.onSharePhoneBlur} defaultValue={this.onWeiXin}>微信号</InputItem>
+                            <InputItem type="text" placeholder={"请输入微信号"} onBlur={this.onWeiXinBlur} defaultValue={this.onWeiXin}>微信号</InputItem>
                         </List>
                         <List className="content-item-border">
                             <InputItem type="password" placeholder={"请输入登录密码"} onBlur={this.onPasswordBlur}>登录密码</InputItem>
                         </List>
                         <div className="registered_button">
                             <List className="content-item">
-                                <Button type="ghost" className="registered_confirm" onClick={this.navBack}>{"确认"}</Button>
+                                <Button type="ghost" className="registered_confirm" onClick={this.onSubmit}>{"确认"}</Button>
                             </List>
                         </div>
                     </div>
