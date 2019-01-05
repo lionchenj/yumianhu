@@ -1,6 +1,13 @@
 .am-navbar {
   background-color: #ff4a43 !important;
 }
+.my_title {
+  text-align: center;
+  font-size: 18px;
+  color: #fff;
+  height: .45rem;
+  line-height: .45rem;
+}
 .am-navbar-title {
   color: #fff !important;
 }
@@ -162,8 +169,14 @@ img {
 /* 个人中心 */
 .my_content {
   width: 80%;
+  height: 2.25rem;
   margin: auto;
   text-align: center;
+  position: relative;
+}
+.my_bg{
+  background: url("../../assets/my_bg.png") no-repeat;
+  background-size: 100% auto;
 }
 .my_haed {
   width: 0.7rem;
@@ -171,10 +184,14 @@ img {
   margin: auto;
   position: relative;
 }
+.my_info_container{
+  color: #fff;
+}
 .my_level{
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: .05rem;
 }
 .my_level img{
   width: .18rem;
@@ -189,12 +206,20 @@ img {
   height: 0.7rem;
   overflow: hidden;
 }
+.my_nickname{
+  padding: .1rem;
+}
 .my_info_friends {
   display: flex;
   align-items: center;
   height: .7rem;
   background: #fff;
+  border-radius: .1rem;
   box-shadow: 0 2px 20px 0 #FFDDD7;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 .my_friends {
   padding: .1rem 0;

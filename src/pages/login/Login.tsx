@@ -9,7 +9,7 @@ import pwd from "../../assets/login_pwd.png"
 // import { UserStorage } from "../../storage/UserStorage";
 // import  createForm  from "rc-form";
 
-// import logo from "../../assets/logo.png"
+import bg from "../../assets/login_bg.png"
 
 
 import './Login.css'
@@ -110,6 +110,9 @@ export class Login extends React.Component<LoginProps, LoginState> {
         
         return (
             <div className="login-container">
+            <div className="login_bg">
+                <img src={bg} alt=""/>
+            </div>
                     <div className="login_content">
                         <List className="login_border">
                         <List.Item thumb= {phone}>
@@ -124,6 +127,8 @@ export class Login extends React.Component<LoginProps, LoginState> {
                         <List className="login_forget">
                             <Link to="/forget_pwd" className="forget-link" >忘记密码？</Link>
                         </List>
+                        <WhiteSpace size="lg" />
+                        <WhiteSpace size="lg" />
                         <WhiteSpace size="lg" />
                         <WhiteSpace size="lg" />
                         <div className="login_button">

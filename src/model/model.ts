@@ -28,6 +28,7 @@ export namespace model {
   export interface FriendsList {
     errno: string;
     errmsg: string;
+    id: string;
     nickname: string;
     mobile: string;
     level: string;

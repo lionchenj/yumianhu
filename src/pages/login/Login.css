@@ -1,6 +1,9 @@
 .login_content {
   width: 80%;
-  margin: 30vh auto 0;
+  margin: 5vh auto 0;
+}
+.login_bg{
+  width: 100%;
 }
 .login_border {
   border-bottom: 1px solid #eeeeee;
@@ -9,7 +12,7 @@
   background: transparent;
 }
 .login_button {
-  padding-top: 1rem;
+  padding-top: .5rem;
   width: 100%;
   margin: auto;
 }

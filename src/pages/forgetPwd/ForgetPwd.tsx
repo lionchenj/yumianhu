@@ -1,11 +1,12 @@
 import * as React from 'react';
 
-import { List, InputItem, Button, WhiteSpace, Toast, Modal} from "antd-mobile";
+import { List, InputItem, Button, Toast, Modal} from "antd-mobile";
 import { History } from "history";
 import { UserService } from '../../service/UserService';
 import { Util } from '../../utils/Util';
 import { UIUtil } from "../../utils/UIUtil";
 import { Redirect } from "react-router-dom";
+import bg from "../../assets/login_bg.png"
 
 
 interface ForgetPwdProps {
@@ -160,6 +161,9 @@ export class ForgetPwd extends React.Component<ForgetPwdProps, ForgetPwdState> {
         }
         return (
             <div className="login-container">
+            <div className="login_bg">
+                <img src={bg} alt=""/>
+            </div>
                 <div className="login_content">
                     <List className="login_border">
                         <InputItem type="digit" maxLength={11}  placeholder="请输入手机号" onBlur={this.onPhoneBlur}></InputItem>
@@ -176,8 +180,6 @@ export class ForgetPwd extends React.Component<ForgetPwdProps, ForgetPwdState> {
                     <List className="login_border">
                         <InputItem type="password" placeholder="请确认登录密码" onBlur={this.onConfirmPasswordBlur}></InputItem>
                     </List>
-                    <WhiteSpace size="lg" />
-                    <WhiteSpace size="lg" />
                     <div className="login_button">
                         <List className="content-item">
                             <Button type="ghost" className="login_confirm" onClick={this.onSubmit}>确认</Button>

@@ -106,12 +106,17 @@ export class Home extends React.Component<HomeProps, HomeState> {
     }
     //关注
     onFollow = (e:any) => {
-        let index = e.currentTarget.dataset.id;
-        console.log(index)
-        UserService.Instance.focusFriends(index).then( avatarUrl => {
+        let id = e.currentTarget.dataset.id;
+        let levelupF = this.state.levelupF;
+        for(let i of levelupF){
+            if(id == i.id && i.status != '1'){
+                return;
+            }
+        }
+        UserService.Instance.focusFriends(id).then( avatarUrl => {
             let levelupF = this.state.levelupF;
             levelupF.map((res:any)=>{
-                if(index == res.mobile){
+                if(id == res.id){
                     res.status = '0'
                 }
             })
@@ -180,21 +185,22 @@ export class Home extends React.Component<HomeProps, HomeState> {
     public render() {
         let list = [];
         if(this.state.levelupF.length != 0){
-            for(var i=0;i<3;i++){
+            for(var i=0;i<this.state.levelupF.length;i++){
                 list.push( <div className="index_modal_list" key={i}>
                 <div className="head_img">
-                    <img src={this.state.levelupF[i].head_imgurl} />
+                    <img src={this.state.levelupF[i].head_imgurl != ''?this.state.levelupF[i].head_imgurl:defaults} />
                 </div>
                 <div className="friends_info">
-                    <div className="text">{this.state.levelupF[i].nickname}</div>
-                    <div className="text">{this.state.levelupF[i].mobile}</div>
+                    <div className="text">{this.state.levelupF[i].nickname != ''?this.state.levelupF[i].nickname:''}</div>
+                    <div className="text">{this.state.levelupF[i].mobile != ''?this.state.levelupF[i].mobile:'0'}</div>
                     <div className="text">
                         <div className="level_img">
                             <img src={king} alt=""/>
                         </div>
-                        <span>{this.state.levelupF[i].level}等级</span>
+                        <span>{this.state.levelupF[i].level != ''?this.state.levelupF[i].level:'0'}等级</span>
                     </div>
-                    <div className="text index_follow" data-id={this.state.levelupF[i].mobile} onClick={this.onFollow}>
+                    <div className="text">{this.state.levelupF[i].user_type != '1'?'网B':'网A'}</div>
+                    <div className="text index_follow" data-id={this.state.levelupF[i].id} onClick={this.onFollow}>
                         <div className="level_img">
                             <img src={this.state.levelupF[i].status != '1'?follow:follow_n} alt=""/>
                         </div>
@@ -258,7 +264,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
         return (
             <div className="home-container">
                     <div className="tab-bar-container margin-t0">
-                    <NavBar className="home-navbar" >{this.state.selectedTab === 'HomeTab' ?'首页':'个人中心'}</NavBar>
+                    <NavBar className={this.state.selectedTab === 'HomeTab' ?'home-navbar':'none'} >{this.state.selectedTab === 'HomeTab' ?'首页':'个人中心'}</NavBar>
                         <TabBar unselectedTintColor="#B8B8BA" tintColor="#000000" barTintColor="#fff" tabBarPosition="bottom">
                             <TabBar.Item title="首页" key="HomeTab" 
                                 selected={this.state.selectedTab === 'HomeTab'}
@@ -340,7 +346,8 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                   }
                             >
                             <div>
-                                <div style={{height:pageheight}}>
+                                <div className="my_bg" style={{height:pageheight+45}}>
+                                    <div className="my_title">个人中心</div>
                                     <div className="my_content">
                                         <div className="my_haed">
                                             <input className="my_haed_input" type="file" onChange={this.onAvatarChange}/>
@@ -374,7 +381,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                         </List.Item>
                                         <List.Item
                                             thumb= {my_topass}
-                                            onClick={()=>{this.props.history.push("/undetermined")}}
+                                            onClick={()=>{this.props.history.push("/friendsUn")}}
                                             arrow="horizontal"
                                             >待通过
                                         </List.Item>

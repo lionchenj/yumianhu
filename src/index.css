@@ -8,6 +8,7 @@ body {
   max-width: 540px;
   min-width: 320px;
   min-height: 100vh;
+  background: #fff !important;
 }
 iframe{
   border:0;
@@ -23,7 +24,9 @@ iframe{
 .am-list-item .am-input-control input{
   font-size: 16px;
 }
-
+.am-list-item+.am-list-item{
+  border: 1px solid #eeeeee;
+}
 .address-footer-button-container{
   color: #00153E;
 }

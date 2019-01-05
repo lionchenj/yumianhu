@@ -98,15 +98,20 @@ export class UserService extends ServiceBase {
         const resp = await this.httpPost("myFriendsList");
         return resp.data as model.FriendsList
     }
+    //好友记录
+    public async myFriendsListRecord(): Promise<any> {
+        const resp = await this.httpPost("myFriendsListRecord");
+        return resp.data as model.FriendsList
+    }
     //升级列表
     public async focusFriendsList(): Promise<any> {
         const resp = await this.httpPost("focusFriendsList")
         return resp.data as model.FriendsList
     }
     //关注
-    public async focusFriends(mobile: string): Promise<void> {
+    public async focusFriends(id: string): Promise<void> {
         const params = {
-            mobile:mobile
+            mobile:id
         }
         return await this.httpPost("focusFriends", params, true)
     }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 // import ReactDOM from "react-dom";
-import { NavBar, Icon, ListView} from "antd-mobile";
+import { NavBar, Icon, ListView, Modal } from "antd-mobile";
 import { History } from "history";
 import { UserService } from '../../service/UserService';
 // import { UIUtil } from '../../utils/UIUtil';
@@ -84,9 +84,13 @@ export class friendsUn extends React.Component<friendsUnProps, friendsUnState> {
         })
     }
     checkFriend = (e:any) => {
-        let phone = e.currentTarget.dataset.id;
-        UserService.Instance.checkFriends(phone).then( () => {
-            this.getUnFriend();            
+        let id = e.currentTarget.dataset.id;
+        let name = e.currentTarget.dataset.name;
+        UserService.Instance.checkFriends(id).then( () => {
+            const alert = Modal.alert
+            alert('提示','已接受好友'+name,[
+                { text: '是', onPress: () => {this.getUnFriend()} },
+            ])
         }).catch ( err => {
             
         })
@@ -122,7 +126,7 @@ export class friendsUn extends React.Component<friendsUnProps, friendsUnState> {
                         </div>
                     </div>
                     <div className="friends_accept">
-                        <button data-id={rowData.mobile} onClick={this.checkFriend}>接受</button>
+                        <button data-id={rowData.id} data-name={rowData.nickname} onClick={this.checkFriend}>接受</button>
                     </div>
                 </div>
             );

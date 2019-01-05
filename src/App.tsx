@@ -5,7 +5,6 @@ import './App.css';
 import { Switch, Route } from "react-router-dom";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { Login } from "./pages/login/Login";
-import { Register } from "./pages/register/Register";
 import { registered } from "./pages/registered/registered";
 import { Home } from "./pages/home/Home";
 import { Settings } from "./pages/settings/Settings";
@@ -25,7 +24,6 @@ class App extends React.Component {
           <PrivateRoute exact path="/" component={Home} />
           <PrivateRoute exact path="/home" component={Home} />
           <Route path="/login"  component={Login} />
-          <Route path="/register"  component={Register} />
           <Route path="/registered"  component={registered} />
           <PrivateRoute path="/settings" component={Settings} />
           <Route path="/forget_pwd" component={ForgetPwd} />

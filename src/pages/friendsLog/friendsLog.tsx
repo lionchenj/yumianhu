@@ -79,7 +79,7 @@ export class friendsLog extends React.Component<friendsLogProps, friendsLogState
 
     }
     componentDidMount() {
-        UserService.Instance.myFriendsList().then( list => {
+        UserService.Instance.myFriendsListRecord().then( list => {
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(list),
                 isLoading: false,
