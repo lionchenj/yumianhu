@@ -29,10 +29,18 @@ export namespace model {
     errno: string;
     errmsg: string;
     id: string;
+    userid:string;
     nickname: string;
     mobile: string;
     level: string;
     head_imgurl: string;
     time: string
+    user_type: string;
+  }
+  //data
+  export interface data {
+    errno: string;
+    errmsg: string;
+    data: any
   }
 }

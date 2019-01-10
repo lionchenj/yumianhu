@@ -91,7 +91,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 })
                 this.setState({ showKey: true });
             }).catch ( err => {
-                
+                UIUtil.showError(err)
             })
         } else if (index == 2) {
             this.props.history.push("/friendsUn");
@@ -164,6 +164,16 @@ export class Home extends React.Component<HomeProps, HomeState> {
             
         })
     }
+    getUserInfo = () => {
+        UserService.Instance.getUserInfo().then( userInfo => {
+            this.setState({
+                ...this.state,
+                userInfo: userInfo
+            })
+        }).catch ( err => {
+            console.log(err.errmsg)
+        })
+    }
     public componentDidUpdate() {
 
     }
@@ -171,14 +181,8 @@ export class Home extends React.Component<HomeProps, HomeState> {
         
     }
     public componentDidMount() {
-        UserService.Instance.getUserInfo().then( userInfo => {this.getFriendsList();
-                this.setState({
-                    ...this.state,
-                    userInfo: userInfo
-                })
-        }).catch ( err => {
-            console.log(err.errmsg)
-        })
+        this.getUserInfo();
+        this.getFriendsList();
     }
     
 
@@ -186,7 +190,8 @@ export class Home extends React.Component<HomeProps, HomeState> {
         let list = [];
         if(this.state.levelupF.length != 0){
             for(var i=0;i<this.state.levelupF.length;i++){
-                list.push( <div className="index_modal_list" key={i}>
+                list.push( 
+                <div className="index_modal_list" key={i}>
                 <div className="head_img">
                     <img src={this.state.levelupF[i].head_imgurl != ''?this.state.levelupF[i].head_imgurl:defaults} />
                 </div>
@@ -199,7 +204,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         </div>
                         <span>{this.state.levelupF[i].level != ''?this.state.levelupF[i].level:'0'}等级</span>
                     </div>
-                    <div className="text">{this.state.levelupF[i].user_type != '1'?'网B':'网A'}</div>
+                    {/* <div className="text">{this.state.levelupF[i].user_type != '1'?'网B':'网A'}</div> */}
                     <div className="text index_follow" data-id={this.state.levelupF[i].id} onClick={this.onFollow}>
                         <div className="level_img">
                             <img src={this.state.levelupF[i].status != '1'?follow:follow_n} alt=""/>
@@ -207,7 +212,8 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         <span>{this.state.levelupF[i].status != '1'?'已关注':'未关注'}</span>
                     </div>
                 </div>
-            </div>)
+            </div>
+            )
             }
         }
         
@@ -215,24 +221,29 @@ export class Home extends React.Component<HomeProps, HomeState> {
         if(this.state.list.length != 0){
             for(var i=0;i<this.state.list.length;i++){
                 friendsList.push(
-                    <div className="friend_list" key={i}>
-                        <div className="head_img">
-                            <img src={this.state.list[i].head_imgurl != ''?this.state.list[i].head_imgurl:defaults} />
-                        </div>
-                        <div className="friends_info">
-                            <div className="name">{this.state.list[i].nickname != ''?this.state.list[i].nickname:'某某某'}</div>
-                            <div className="level">
-                                <div className="level_img">
-                                    <img src={king} alt=""/>
-                                </div>
-                                <span>{this.state.list[i].level != ''?this.state.list[i].level:'0'}等级</span>
-                            </div>
-                        </div>
-                    </div>
+
+            <List className="my-list">
+                <List.Item thumb={this.state.list[i].head_imgurl!=''?this.state.list[i].head_imgurl:defaults} extra={this.state.list[i].time}>{this.state.list[i].nickname}</List.Item>
+            </List>
+                    // <div className="friend_list" key={i} data-id={this.state.list[i].userid} data-token={accessToken} onClick={(e:any)=>{
+                    //     window.location.href="https://dev170.weibanker.cn/chenjj/www/im/im.html?userid="+e.currentTarget.dataset.id+"&assToken="+e.currentTarget.dataset.token;
+                    //     }}>
+                    //     <div className="head_img">
+                    //         <img src={this.state.list[i].head_imgurl != ''?this.state.list[i].head_imgurl:defaults} />
+                    //     </div>
+                    //     <div className="friends_info">
+                    //         <div className="name">{this.state.list[i].nickname != ''?this.state.list[i].nickname:'某某某'}</div>
+                    //         <div className="level">
+                    //             <div className="level_img">
+                    //                 <img src={king} alt=""/>
+                    //             </div>
+                    //             <span>{this.state.list[i].level != ''?this.state.list[i].level:'0'}等级</span>
+                    //         </div>
+                    //     </div>
+                    // </div>
                 )
             }
         }
-        
         //   const separator = (sectionID: number, rowID: number) => (
         //     <div
         //       key={`${sectionID}-${rowID}`}
@@ -274,7 +285,8 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                             ...this.state,
                                             selectedTab: "HomeTab"
                                         })
-                                        this.props.history.push("#HomeTab")
+                                        this.props.history.push("#HomeTab");
+                                        this.getFriendsList();
                                     }
                                 }
                                 icon={<div style={{
@@ -311,7 +323,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                     </List>
 
                                     
-                                    <List className="bg_w"><List.Item>我的好友</List.Item></List>
+                                    <List className="bg_w"><List.Item>交友记录</List.Item></List>
                                     <List className="index_friends_list bg_w">
                                         {friendsList}
                                     </List>
@@ -327,6 +339,8 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                             selectedTab: "MyTab"
                                         })
                                         this.props.history.push("#MyTab")
+                                        console.log('tabbar')
+                                        this.getUserInfo()
                                     }
                                 }
                                 icon={
@@ -376,7 +390,12 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                         <List.Item
                                             thumb= {my_friends}
                                             arrow="horizontal"
-                                            onClick={()=>{this.props.history.push("/friendList")}}
+            
+                                            onClick={()=>{
+                                                const accessToken = UserStorage.getCookie("User.AccessTokenKey");
+                                                window.location.href="https://dev170.weibanker.cn/chenjj/www/im/list.html?assToken="+accessToken;
+                                            }}
+                                            // onClick={()=>{this.props.history.push("/friendList")}}
                                             >我的好友
                                         </List.Item>
                                         <List.Item

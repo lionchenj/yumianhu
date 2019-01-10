@@ -79,7 +79,7 @@ export class friendsLog extends React.Component<friendsLogProps, friendsLogState
 
     }
     componentDidMount() {
-        UserService.Instance.myFriendsListRecord().then( list => {
+        UserService.Instance.myFriendsList().then( list => {
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(list),
                 isLoading: false,
@@ -134,7 +134,7 @@ export class friendsLog extends React.Component<friendsLogProps, friendsLogState
                         onEndReached={this.onEndReached}
                         onEndReachedThreshold={10}
                         style={{
-                            height: this.state.height,
+                            height: bodyHeight,
                             overflow: 'auto',
                         }}
                     />

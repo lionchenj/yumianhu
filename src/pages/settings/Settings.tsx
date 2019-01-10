@@ -44,7 +44,7 @@ export class Settings extends React.Component<SettingsProps, SettingsState> {
                     className="home-navbar" >
                         <div className="nav-title">设置</div>
                 </NavBar>
-                <List renderHeader={() => ''} className="my-list">
+                <List renderHeader={() => ''} className="content-item-border">
                     <List.Item arrow="horizontal" onClick={()=>{this.props.history.push("/updata_pwd")}}>登陆密码修改</List.Item>
                 </List>
             </div>

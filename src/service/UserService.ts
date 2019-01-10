@@ -127,4 +127,9 @@ export class UserService extends ServiceBase {
         }
         return await this.httpPost("checkFriends", params, true)
     }
+    //接受好友
+    public async getRongCloudToKen(): Promise<any> {
+        const resp = await this.httpPost("getRongCloudToKen");
+        return resp.data as model.data
+    }
 }

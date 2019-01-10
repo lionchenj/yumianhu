@@ -2,6 +2,7 @@ import * as React from 'react';
 // import ReactDOM from "react-dom";
 import { NavBar, Icon, ListView} from "antd-mobile";
 import { History } from "history";
+import { UserStorage } from "../../storage/UserStorage";
 import { UserService } from '../../service/UserService';
 // import { UIUtil } from '../../utils/UIUtil';
 import { model } from '../../model/model';
@@ -76,7 +77,7 @@ export class friendList extends React.Component<friendListProps, friendListState
 
     }
     componentDidMount() {
-        UserService.Instance.myFriendsList().then( list => {
+        UserService.Instance.myFriendsListRecord().then( list => {
             this.setState({
                 dataSource: this.state.dataSource.cloneWithRows(list),
                 isLoading: false,
@@ -103,8 +104,13 @@ export class friendList extends React.Component<friendListProps, friendListState
         );
   
         const row = (rowData: model.FriendsList, sectionID: number, rowID: number) => {
+            let token = UserStorage.getCookie("User.AccessTokenKey");
             return (
-                <div className="friend_list">
+                <div className="friend_list" data-id={rowData.userid} onClick={
+                    (e:any)=>{
+                        window.location.href="https://dev170.weibanker.cn/chenjj/www/im/im.html?userid="+e.currentTarget.dataset.id+"&assToken="+token
+                    }
+                }>
                     <div className="head_img">
                         <img src={rowData.head_imgurl?rowData.head_imgurl:defaults} />
                     </div>
@@ -143,7 +149,7 @@ export class friendList extends React.Component<friendListProps, friendListState
                         onEndReached={this.onEndReached}
                         onEndReachedThreshold={10}
                         style={{
-                            height: this.state.height,
+                            height: bodyHeight,
                             overflow: 'auto',
                         }}
                     />

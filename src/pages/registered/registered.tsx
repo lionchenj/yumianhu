@@ -77,6 +77,7 @@ export class registered extends React.Component<Props, registeredState> {
         const codeInfo = "请输入验证码"
         const passwordInfo = "请输入不少于6位长度的密码"
         const nameInfo = "请输入姓名"
+        const weiXinInfo = "请输入微信号"
         if (!this.phone) {
             Toast.info(info)
             return
@@ -103,6 +104,10 @@ export class registered extends React.Component<Props, registeredState> {
         }
         if (!this.name) {
             Toast.info(nameInfo)
+            return
+        }
+        if (!this.onWeiXin) {
+            Toast.info(weiXinInfo)
             return
         }
         UserService.Instance.register(trimPhone, trimCode, this.name, trimPassword, this.onWeiXin).then( () => {

@@ -43,6 +43,7 @@ img {
   background: #fff;
 }
 .friend_list {
+  position: relative;
   display: flex;
   padding: 0.1rem;
 }

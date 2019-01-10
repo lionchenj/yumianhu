@@ -1,0 +1,220 @@
+html {
+  font-size: 625%;
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  max-width: 540px;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #fff !important;
+}
+.im_navbar {
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ff4a43;
+  font-size: 18px;
+  color: #fff;
+}
+.im_tab {
+  width: 33%;
+}
+.im_back {
+  height: 100%;
+}
+.im_back svg {
+  margin-left: 15px;
+}
+.im_title {
+  text-align: center;
+}
+.im_dialogue {
+  width: 100%;
+  overflow: scroll;
+}
+.im_input {
+  width: 100%;
+  height: 60px;
+  background-color: #ff4a43;
+  display: flex;
+}
+.im_input_text {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+input {
+  margin-left: 10px;
+  height: 35px;
+  width: 100%;
+  font-size: 24px;
+  border: none;
+  border-radius: 20px;
+  text-indent: 20px;
+}
+.im_input_button {
+  width: 20%;
+  height: 60px;
+  display: grid;
+}
+.im_input_button button {
+  font-size: 18px;
+  color: #fff;
+  border: none;
+  background: transparent;
+}
+.im_input_container {
+  display: flex;
+  height: 60px;
+  position: relative;
+  align-items: center;
+}
+.im_input_container img {
+  width: 20px;
+  height: 20px;
+}
+.im_input_file {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20%;
+  height: 60px;
+  opacity: 0;
+}
+/* 对话框 */
+/* 自己 */
+.im_me {
+  padding: 10px 0 10px 5%;
+  width: 95%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.im_me_talk {
+  max-width: 80%;
+  background: transparent;
+}
+.im_me_name {
+  font-size: 14px;
+  text-align: end;
+}
+.im_me_name span {
+  margin-right: 25px;
+}
+.im_me_text {
+  background: #eeeeee;
+  border-radius: 10px;
+  padding: 5px;
+  font-size: 16px;
+  word-wrap: break-word;
+}
+.im_me_upimg {
+  width: 100%;
+}
+.im_me_img {
+  width: 50px;
+  height: 50px;
+  margin: 10px;
+  background: transparent;
+  display: grid;
+}
+/* 对方 */
+.im_user {
+  padding: 10px 5% 10px 0;
+  width: 95%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.im_user_name {
+  font-size: 14px;
+  text-align: start;
+}
+.im_user_name span {
+  margin-left: 25px;
+}
+.im_user_text {
+  background: #999999;
+  border-radius: 10px;
+  padding: 5px;
+  font-size: 16px;
+  word-wrap: break-word;
+}
+.im_user_upimg {
+  width: 100%;
+}
+img {
+  width: 100%;
+  height: 100%;
+}
+.im_user_upimg img {
+  float: left;
+}
+.im_me_upimg img {
+  float: right;
+}
+/* 好友列表 */
+.friend_list {
+  position: relative;
+  display: flex;
+  padding: 0.1rem;
+}
+.friend_list + .friend_list {
+  border-top: 1px solid #eeeeee;
+}
+.friend_list .head_img {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+}
+.friend_list img{
+    display: block;
+}
+.friend_list .friends_info {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-left: 0.2rem;
+}
+.friend_list .friends_info .name {
+  color: #666666;
+  line-height: 1;
+  font-size: 0.14rem;
+  padding-top: 0.02rem;
+}
+.friend_list .friends_info .level {
+  display: flex;
+  align-items: center;
+  padding-top: 0.04rem;
+  padding-bottom: 0.05rem;
+}
+.friend_list .friends_info .level_img {
+  width: 0.15rem;
+  height: 0.15rem;
+}
+.friend_list .friends_info .level span {
+  color: #999999;
+  line-height: 1;
+  font-size: 0.12rem;
+  margin-left: 0.05rem;
+}
+.top_fixed{
+    position: fixed;
+    top: 0;
+    z-index: 1;
+}
+.im_list{
+    margin-top: 45px;
+}
+.friend_count{
+    position: absolute;
+    right: 20px;
+    font-size: 16px;
+}
