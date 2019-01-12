@@ -44,8 +44,10 @@ export class UpdataPwd extends React.Component<UpdataPwdProps, UpdataPwdState> {
         })
     }
     onRedirectBack = () => {
-        const history = this.props.history
-        history.go(-1)
+        this.setState({
+            ...this.state,
+            redirectToLogin: true
+        })
     }
 
     onPhoneBlur = (value: string) => {

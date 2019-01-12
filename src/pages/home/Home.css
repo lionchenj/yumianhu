@@ -1,6 +1,15 @@
 .am-navbar {
   background-color: #ff4a43 !important;
 }
+.red{
+  border:none;
+  height: .1rem;
+  width: .1rem;
+  position: absolute;
+  top: .15rem;
+  right: .35rem;
+  color: red;
+}
 .my_title {
   text-align: center;
   font-size: 18px;

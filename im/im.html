@@ -16,28 +16,7 @@
         <div class="im_tab"></div>
     </div>
     <div id="im_dialogue" class="im_dialogue">
-
-
-        <!-- <div class="im_me">
-            <div class="im_me_talk">
-                <div class="im_me_name">xxx</div>
-                <div class="im_me_text">wonv oifw hf wejf owjoewconewon  wfen owen</div>
-            </div>
-            <div class="im_me_img">
-                <img src="../src/assets/default.png" alt="">
-            </div>
-        </div> -->
-
-
-        <!-- <div class="im_user">
-            <div class="im_me_img">
-                <img src="../src/assets/default.png" alt="">
-            </div>
-            <div class="im_me_talk">
-                <div class="im_user_name">xxx</div>
-                <div class="im_user_text">wonv oifw hf wejf owjoewconewon  wfen owen</div>
-            </div>
-        </div> -->
+        <div id="oldLog"></div>
     </div>
     <div class="im_input">
         <div class="im_input_text">
@@ -52,13 +31,13 @@
         </div>
     </div>
     <script src="jquery-1.11.3.min.js"></script>
+    <script>
+        var height = window.innerHeight - 105;
+        $('.im_dialogue').css('height',height + 'px')
+        </script>
     <script src="https://cdn.ronghub.com/RongIMLib-2.3.3.js"></script>
     <script src="https://cdn.ronghub.com/RongEmoji-2.2.4.min.js"></script>
     <script src="https://cdn.ronghub.com/RongIMVoice-2.2.4.min.js"></script>
     <script src="im.js"></script>
-    <script>
-    var height = window.innerHeight - 105;
-    $('.im_dialogue').css('height',height + 'px')
-    </script>
 </body>
 </html>

@@ -2,6 +2,8 @@ import * as React from 'react';
 // import ReactDOM from "react-dom";
 import { NavBar, Icon, } from "antd-mobile";
 import { History } from "history";
+import { Redirect } from "react-router-dom";
+
 // import { UserService } from '../../service/UserService';ListView,Tabs
 // import { UIUtil } from '../../utils/UIUtil';
 // import { model } from '../../model/model';
@@ -27,7 +29,9 @@ interface datingrecordState {
     total_num: number,
     list_num: number,
     tabs:any,
-    coins:any
+    coins:any,
+    redirectToLogin: boolean
+
 }
 const bodyHeight = (window.innerHeight/100 - 0.45) + 'rem';
 export class datingrecord extends React.Component<datingrecordProps, datingrecordState> {
@@ -51,20 +55,31 @@ export class datingrecord extends React.Component<datingrecordProps, datingrecor
             list_num: 1,
             tabs:[],
             coins:[],
-            tabIndex:0
+            tabIndex:0,
+            redirectToLogin: false
           };
         
     }
 
     onRedirectBack = () => {
-        const history = this.props.history
-        history.go(-1)
+        this.setState({
+            ...this.state,
+            redirectToLogin: true
+        })
     }
 
     componentDidMount() {
     }
 
     public render() {
+        const { redirectToLogin} = this.state
+    
+        if (redirectToLogin) {
+            const to = {
+                pathname: "/home"
+            }
+            return <Redirect to={to} />
+        }
         //   const separator = (sectionID: number, rowID: number) => (
         //     <div
         //       key={`${sectionID}-${rowID}`}

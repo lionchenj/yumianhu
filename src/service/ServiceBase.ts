@@ -3,6 +3,7 @@ import axios from "axios";
 import { ApiBaseUrl, BinanceApi } from "../utils/Constants";
 import qs from "qs";
 import { ApiError } from "../utils/ApiError";
+import { UserStorage } from "../storage/UserStorage";
 
 
 export abstract class ServiceBase {
@@ -74,6 +75,9 @@ export abstract class ServiceBase {
         }
         const errCode: number = parseInt(resp.data.errno)
         if (errCode !== 0) {
+            if(errCode == 401){
+                UserStorage.clearAccessToken();
+            }
             const errMsg = resp.data.errmsg
             throw new ApiError(errCode, errMsg)
         }

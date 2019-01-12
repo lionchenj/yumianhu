@@ -91,7 +91,11 @@ export class Home extends React.Component<HomeProps, HomeState> {
         let index = e.currentTarget.dataset.id;
         console.log("onTapHomeMenu", index)
         if (index == 0) {
-            this.props.history.push("/registered");
+            if (this.state.userInfo.level == 0) {
+                UIUtil.showInfo("暂未开通");
+            } else {
+                this.props.history.push("/registered");
+            }
         } else if (index == 1) {
             //关注列表
             UserService.Instance.focusFriendsList().then( res => {
@@ -113,6 +117,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
         } else if (index == 2) {
             this.props.history.push("/friendsUn");
         } else if (index == 3) {
+            // UIUtil.showInfo("暂未开通")
             this.props.history.push("/share");
         }
     }
@@ -147,6 +152,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
     //登出
     onLogout = () => {
         UserStorage.clearAccessToken();
+        UserService.Instance.getMemberOutTime().then( () => {}).catch ( err => { console.log(err.errmsg) });
         this.props.history.push("/login");
     }
     onAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -346,9 +352,15 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                     </Carousel>
                                 </div>
                                 <div className="tab">
-                                    <div className="tabA">店小二</div>
-                                    <div className="" onClick={()=>{this.props.history.push("/homeA");}}>小掌柜</div>
-                                    <div className="" onClick={()=>{this.props.history.push("/homeB");}}>大掌柜</div>
+                                    <div className="" onClick={()=>{
+                                        UIUtil.showInfo("暂未开通")
+                                        // this.props.history.push("/homeA");
+                                        }}>店小二</div>
+                                    <div className="tabB">小掌柜</div>
+                                    <div className="" onClick={()=>{
+                                        UIUtil.showInfo("暂未开通")
+                                        // this.props.history.push("/homeB");
+                                        }}>大掌柜</div>
                                 </div>    
                                 <List className="bg_w padding_tb">
                                     <div className="index_tab">
@@ -360,6 +372,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                             <img src={viplevel} alt=""/>
                                         </div>
                                         <div className="index_icon" data-id="2" onClick={this.onTapHomeMenu}>
+                                            <div className={this.state.userInfo.stay_by!=0?'red':'none'}>New</div>
                                             <img src={topass} alt=""/>
                                         </div>
                                         <div className="index_icon" data-id="3" onClick={this.onTapHomeMenu}>
@@ -436,12 +449,11 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                         <List.Item
                                             thumb= {my_friends}
                                             arrow="horizontal"
-            
-                                            onClick={()=>{
-                                                const accessToken = UserStorage.getCookie("User.AccessTokenKey");
-                                                window.location.href="https://dev170.weibanker.cn/chenjj/www/im/list.html?assToken="+accessToken;
-                                            }}
-                                            // onClick={()=>{this.props.history.push("/friendList")}}
+                                            // onClick={()=>{
+                                            //     const accessToken = UserStorage.getCookie("User.AccessTokenKey");
+                                            //     window.location.href="https://dev170.weibanker.cn/chenjj/www/im/list.html?assToken="+accessToken;
+                                            // }}
+                                            onClick={()=>{this.props.history.push("/friendList")}}
                                             >我的好友
                                         </List.Item>
                                         <List.Item
@@ -449,6 +461,12 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                             onClick={()=>{this.props.history.push("/friendsUn")}}
                                             arrow="horizontal"
                                             >待通过
+                                        </List.Item>
+                                        <List.Item
+                                            thumb= {my_topass}
+                                            onClick={()=>{this.props.history.push("/friendsLog")}}
+                                            arrow="horizontal"
+                                            >交友记录
                                         </List.Item>
                                         <List.Item
                                             thumb= {my_setting}

@@ -344,8 +344,8 @@ export class HomeA extends React.Component<HomeAProps, HomeAState> {
                                     </Carousel>
                                 </div>
                                 <div className="tab">
-                                    <div className="" onClick={()=>{this.props.history.push("/home");}}>店小二</div>
-                                    <div className="tabB">小掌柜</div>
+                                    <div className="tabA">店小二</div>
+                                    <div className="" onClick={()=>{this.props.history.push("/home");}}>小掌柜</div>
                                     <div className="" onClick={()=>{this.props.history.push("/homeB");}}>大掌柜</div>
                                 </div>    
                                 <List className="bg_w padding_tb">

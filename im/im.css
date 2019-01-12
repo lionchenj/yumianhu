@@ -1,5 +1,6 @@
 html {
   font-size: 625%;
+  overflow-x: hidden;
 }
 body {
   margin: 0;

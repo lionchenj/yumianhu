@@ -58,7 +58,6 @@ export class UserService extends ServiceBase {
     public logout() {
         ServiceBase.accessToken = "";
         UserStorage.clearAccessToken();
-        UserService.Instance.getMemberOutTime().then( () => {}).catch ( err => { console.log(err.errmsg) });
     }
     //登出判断
     public async getMemberOutTime(): Promise<void> {

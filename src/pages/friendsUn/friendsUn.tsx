@@ -7,6 +7,7 @@ import { UserService } from '../../service/UserService';
 import { model } from '../../model/model';
 import king from "../../assets/my_VIP.png";
 import defaults from "../../assets/default.png";
+import { Redirect } from "react-router-dom";
 
 interface friendsUnProps {
     history: History
@@ -21,7 +22,8 @@ interface friendsUnState {
     page: number,
     total_num: number,
     list_num: number,
-    unFriend: any
+    unFriend: any,
+    redirectToLogin: boolean
 }
 const bodyHeight = (window.innerHeight/100 - 0.45) + 'rem';
 
@@ -43,13 +45,17 @@ export class friendsUn extends React.Component<friendsUnProps, friendsUnState> {
             page: 1,
             total_num: 1,
             list_num: 1,
-            unFriend:[]
+            unFriend:[],
+            redirectToLogin: false
+
           };
         
     }
     onRedirectBack = () => {
-        const history = this.props.history;
-        history.go(-1);
+        this.setState({
+            ...this.state,
+            redirectToLogin: true
+        })
     }
     onEndReached = (event:any) => {
         if (this.state.isLoading && !this.state.hasMore) {
@@ -100,6 +106,14 @@ export class friendsUn extends React.Component<friendsUnProps, friendsUnState> {
     }
 
     public render() {
+        const { redirectToLogin} = this.state
+    
+        if (redirectToLogin) {
+            const to = {
+                pathname: "/home"
+            }
+            return <Redirect to={to} />
+        }
         const separator = (sectionID: number, rowID: number) => (
             <div
               key={`${sectionID}-${rowID}`}

@@ -3,7 +3,9 @@ let token = "",
   me_head_imgurl = "",
   me_name = "",
   user_head_imgurl = "",
-  user_name = "";
+  user_name = "",
+  ishasMsg = true,
+  oldLog = [];
 function frontOneHour(fmt) {
   var currentTime = new Date(new Date().getTime());
   var o = {
@@ -29,6 +31,23 @@ function frontOneHour(fmt) {
   }
   return fmt;
 }
+function frontOneHour_send (fmt,time) {
+  var currentTime = new Date(time);
+  var o = {
+      'M+': currentTime.getMonth() + 1, // 月份
+      'd+': currentTime.getDate(), // 日
+      'h+': currentTime.getHours(), // 小时
+      'm+': currentTime.getMinutes(), // 分
+      's+': currentTime.getSeconds(), // 秒
+      'q+': Math.floor((currentTime.getMonth() + 3) / 3), // 季度
+      'S': currentTime.getMilliseconds() // 毫秒
+  }
+  if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (currentTime.getFullYear() + '').substr(4 - RegExp.$1.length))
+  for (var k in o) {
+      if (new RegExp('(' + k + ')').test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+  }
+  return fmt
+}
 //初始
 (function() {
   var url = location.search; //获取url中"?"符后的字串
@@ -40,8 +59,13 @@ function frontOneHour(fmt) {
       theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
     }
   }
+  
   token = theRequest.assToken;
   userid = theRequest.userid;
+  console.log('token')
+  console.log(token)
+  console.log('userid')
+  console.log(userid)
   getUserinfo(theRequest.assToken, userid);
   $.ajax({
     type: "POST",
@@ -64,7 +88,7 @@ function frontOneHour(fmt) {
           switch (status) {
             case RongIMLib.ConnectionStatus.CONNECTED:
               console.log("链接成功");
-              setUnreadCount();
+              getOldLog();
               break;
             case RongIMLib.ConnectionStatus.CONNECTING:
               console.log("正在链接");
@@ -96,7 +120,7 @@ function frontOneHour(fmt) {
                                           <img src="${user_head_imgurl}" alt="">
                                       </div>
                                       <div class="im_me_talk">
-                                          <div class="im_user_name">${user_name}<span>${frontOneHour('hh:mm:ss',message.sentTime)}</span></div>
+                                          <div class="im_user_name">${user_name}<span>${frontOneHour_send('yyyy年MM月dd日 hh:mm',message.sentTime)}</span></div>
                                           <div class="im_user_text">${
                                             message.content.content
                                           }</div>
@@ -110,7 +134,7 @@ function frontOneHour(fmt) {
                                           <img src="${user_head_imgurl}" alt="">
                                       </div>
                                       <div class="im_me_talk">
-                                          <div class="im_user_name">${user_name}<span>${frontOneHour('hh:mm:ss',message.sentTime)}</span></div>
+                                          <div class="im_user_name">${user_name}<span>${frontOneHour_send('yyyy年MM月dd日 hh:mm',message.sentTime)}</span></div>
                                           <div class="im_user_upimg"><img src="${
                                             message.content.imageUri
                                           }"></div>                                          
@@ -181,30 +205,6 @@ function getUserinfo(assToken, id) {
     }
   });
 }
-$("#im_button").on("click", function() {
-  // 获取消息内容和uid
-  var str = $("#im_input").val();
-  if (str == "") {
-    alert("请输入聊天内容");
-    return false;
-  }
-  var messageStr = `<div class="im_me">
-            <div class="im_me_talk">
-            <div class="im_me_name"><span>${frontOneHour('hh:mm:ss')}</span>${me_name}</div>
-            <div class="im_me_text">${str}</div>
-        </div>
-        <div class="im_me_img">
-            <img src="${me_head_imgurl}" alt="">
-        </div>
-    </div>`;
-  $(".im_dialogue").append(messageStr);
-  var div = document.getElementById("im_dialogue");
-  div.scrollTop = div.scrollHeight;
-  // 发送消息
-  rongSendMessage(userid, str);
-  // 清空消息框中的内容
-  $("#im_input").val("");
-});
 /**
  * 发送消息
  * @param  {integer} uid  用户id
@@ -251,6 +251,33 @@ function rongSendMessage(uid, word) {
     }
   });
 }
+
+//文字消息
+$("#im_button").on("click", function() {
+  // 获取消息内容和uid
+  var str = $("#im_input").val();
+  if (str == "") {
+    alert("请输入聊天内容");
+    return false;
+  }
+  var messageStr = `<div class="im_me">
+            <div class="im_me_talk">
+            <div class="im_me_name"><span>${frontOneHour('hh:mm')}</span>${me_name}</div>
+            <div class="im_me_text">${str}</div>
+        </div>
+        <div class="im_me_img">
+            <img src="${me_head_imgurl}" alt="">
+        </div>
+    </div>`;
+  $(".im_dialogue").append(messageStr);
+  var div = document.getElementById("im_dialogue");
+  div.scrollTop = div.scrollHeight;
+  // 发送消息
+  rongSendMessage(userid, str);
+  // 清空消息框中的内容
+  $("#im_input").val("");
+});
+//图片消息
 $(".im_input_file").on("change", function() {
   var file = this.files[0];
   var FileData = new FormData();
@@ -266,7 +293,7 @@ $(".im_input_file").on("change", function() {
       console.log(res);
       var messageStr = `<div class="im_me">
                               <div class="im_me_talk">
-                              <div class="im_me_name"><span>${frontOneHour('hh:mm:ss')}</span>${me_name}</div>
+                              <div class="im_me_name"><span>${frontOneHour('hh:mm')}</span>${me_name}</div>
                               <div class="im_me_upimg"><img src="${
                                 res.data.path
                               }"></div>
@@ -337,9 +364,94 @@ function sendImage(base64, url) {
   });
 }
 
+function getOldLog() {
+  if(!ishasMsg){
+    return
+  }
+  var conversationType = RongIMLib.ConversationType.PRIVATE; //单聊,其他会话选择相应的消息类型即可。
+  var targetId = userid; // 想获取自己和谁的历史消息，targetId 赋值为对方的 Id。
+  var timestrap = null; // 默认传 null，若从头开始获取历史消息，请赋值为 0 ,timestrap = 0;
+  var count = 20; // 每次获取的历史消息条数，范围 0-20 条，可以多次获取。
+  RongIMLib.RongIMClient.getInstance().getHistoryMessages(conversationType, targetId, timestrap, count, {
+    onSuccess: function(list, hasMsg) {
+      ishasMsg = hasMsg;
+      console.log(list)
+        // list => Message 数组。
+      // hasMsg => 是否还有历史消息可以获取。
+      var messageStr = '';
+      list.map((data)=>{
+        oldLog.push(data);
+        if(data.senderUserId == userid){
+          if (data.content.messageName == "TextMessage") {
+            messageStr +=`<div class="im_user">
+                                      <div class="im_me_img">
+                                          <img src="${user_head_imgurl}" alt="">
+                                      </div>
+                                      <div class="im_me_talk">
+                                          <div class="im_user_name">${user_name}<span>${frontOneHour_send('yyyy年MM月dd日 hh:mm',data.sentTime)}</span></div>
+                                          <div class="im_user_text">${
+                                            data.content.content
+                                          }</div>
+                                      </div>
+                                  </div>`;
+          }
+          // if (data.type == "img") {
+            else{
+            messageStr += `<div class="im_user">
+                                      <div class="im_me_img">
+                                          <img src="${user_head_imgurl}" alt="">
+                                      </div>
+                                      <div class="im_me_talk">
+                                          <div class="im_user_name">${user_name}<span>${frontOneHour_send('yyyy年MM月dd日 hh:mm',data.sentTime)}</span></div>
+                                          <div class="im_user_upimg"><img src="${
+                                            data.content.content
+                                          }"></div>                                          
+                                      </div>
+                                  </div>`;
+          }
+        } else {
+          if (data.content.messageName == "TextMessage") {
+            messageStr += `<div class="im_me">
+                    <div class="im_me_talk">
+                    <div class="im_me_name"><span>${frontOneHour_send('yyyy年MM月dd日 hh:mm',data.sentTime)}</span>${me_name}</div>
+                    <div class="im_me_text">${data.content.content}</div>
+                </div>
+                <div class="im_me_img">
+                    <img src="${me_head_imgurl}" alt="">
+                </div>
+            </div>`;
+          } else {
+            messageStr += `<div class="im_me">
+                              <div class="im_me_talk">
+                              <div class="im_me_name"><span>${frontOneHour_send('yyyy年MM月dd日 hh:mm',data.sentTime)}</span>${me_name}</div>
+                              <div class="im_me_upimg"><img src="${
+                                data.content.imageUri
+                              }"></div>
+                          </div>
+                          <div class="im_me_img">
+                              <img src="${me_head_imgurl}" alt="">
+                          </div>
+                      </div>`;
+          }
+        }
+      })
+      $("#oldLog").prepend(messageStr);
+      if(ishasMsg){
+        getOldLog();
+      }else{
+        setUnreadCount();
+      }
+    },
+    onError: function(error) {
+      console.log("GetHistoryMessages,errorcode:" + error);
+    }
+  });
+}
+
 function setUnreadCount() {
+  
   let UnreadCount = getCookie();
-  UnreadCount = JSON.parse(UnreadCount);
+  UnreadCount = JSON.parse(UnreadCount)||[];
   let list = [];
   UnreadCount.map((data)=>{
     if(data.id == userid){

@@ -53,7 +53,7 @@
   "homepage": "https://dev170.weibanker.cn/chenjj/www/shuaishou/",
   "proxy": {
     "/shadow/vatc/*": {
-      "target": "https://dev170.weibanker.cn/chenjj/www/shuaishou/",
+      "target": "https://dev170.weibanker.cn/hongjh/www/yumianhu/",
       "secure": false,
       "changeOrigin": true
     }

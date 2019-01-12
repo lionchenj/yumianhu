@@ -6,6 +6,7 @@ import { UserService } from '../../service/UserService';
 // import { UIUtil } from '../../utils/UIUtil';
 import { model } from '../../model/model';
 import defaults from "../../assets/default.png";
+import { Redirect } from "react-router-dom";
 
 
 
@@ -27,7 +28,8 @@ interface friendsLogState {
     total_num: number,
     list_num: number,
     tabs:any,
-    coins:any
+    coins:any,
+    redirectToLogin: boolean
 }
 const bodyHeight = (window.innerHeight/100 - 0.45) + 'rem';
 
@@ -52,25 +54,29 @@ export class friendsLog extends React.Component<friendsLogProps, friendsLogState
             list_num: 1,
             tabs:[],
             coins:[],
-            tabIndex:0
+            tabIndex:0,
+            redirectToLogin: false
+
           };
         
     }
     onRedirectBack = () => {
-        const history = this.props.history;
-        history.go(-1);
+        this.setState({
+            ...this.state,
+            redirectToLogin: true
+        })
     }
     onEndReached = (event:any) => {
         // load new data
         // hasMore: from backend data, indicates whether it is the last page, here is false
-        if (this.state.isLoading && !this.state.hasMore) {
-          return;
-        }
-        if (!this.state.isLoading && this.state.hasMore) {
-            return;
-        }
-        this.setState({ isLoading: true });
-        this.getFriends()
+        // if (this.state.isLoading && !this.state.hasMore) {
+        //   return;
+        // }
+        // if (!this.state.isLoading && this.state.hasMore) {
+        //     return;
+        // }
+        // this.setState({ isLoading: true });
+        // this.getFriends()
     }
     getFriends = () => {
 
@@ -94,6 +100,14 @@ export class friendsLog extends React.Component<friendsLogProps, friendsLogState
     }
 
     public render() {
+        const { redirectToLogin} = this.state
+    
+        if (redirectToLogin) {
+            const to = {
+                pathname: "/home"
+            }
+            return <Redirect to={to} />
+        }
         const separator = (sectionID: number, rowID: number) => (
             <div
               key={`${sectionID}-${rowID}`}
