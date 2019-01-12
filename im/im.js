@@ -70,13 +70,13 @@ function frontOneHour_send (fmt,time) {
   $.ajax({
     type: "POST",
     url:
-      "https://dev170.weibanker.cn/hongjh/www/yumianhu/api?url=getRongCloudToKen",
+      "https://www.shuaishou123.com/api?url=getRongCloudToKen",
     data: { access_token: theRequest.assToken },
     dataType: "json",
     success: function(data) {
       if (data.errno == 401) {
         window.location.href =
-          "https://dev170.weibanker.cn/chenjj/www/shuaishou/index.html";
+          "https://www.shuaishou123.com/index.html";
         return;
       }
       console.log(data.data.token);
@@ -182,7 +182,7 @@ function frontOneHour_send (fmt,time) {
 function getUserinfo(assToken, id) {
   $.ajax({
     type: "POST",
-    url: "https://dev170.weibanker.cn/hongjh/www/yumianhu/api?url=getUserInfo",
+    url: "https://www.shuaishou123.com/api?url=getUserInfo",
     data: { access_token: assToken },
     dataType: "json",
     success: function(data) {
@@ -194,7 +194,7 @@ function getUserinfo(assToken, id) {
   $.ajax({
     type: "POST",
     url:
-      "https://dev170.weibanker.cn/hongjh/www/yumianhu/api?url=getNameImages",
+      "https://www.shuaishou123.com/api?url=getNameImages",
     data: { id: id },
     dataType: "json",
     success: function(data) {
@@ -283,7 +283,7 @@ $(".im_input_file").on("change", function() {
   var FileData = new FormData();
   FileData.append("imageFile", file);
   $.ajax({
-    url: "https://dev170.weibanker.cn/hongjh/www/yumianhu/api?url=uploadImages",
+    url: "https://www.shuaishou123.com/api?url=uploadImages",
     type: "POST",
     data: FileData,
     cache: false,

@@ -5,7 +5,7 @@ import { History } from "history";
 import { UserService } from '../../service/UserService';
 import { Util } from '../../utils/Util';
 import { UIUtil } from "../../utils/UIUtil";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import bg from "../../assets/login_bg.png"
 
 
@@ -179,6 +179,9 @@ export class ForgetPwd extends React.Component<ForgetPwdProps, ForgetPwdState> {
                     </List>
                     <List className="login_border">
                         <InputItem type="password" placeholder="请确认登录密码" onBlur={this.onConfirmPasswordBlur}></InputItem>
+                    </List>
+                    <List className="login_forget">
+                        <Link to="/login" className="forget-link" >账号登陆</Link>
                     </List>
                     <div className="login_button">
                         <List className="content-item">

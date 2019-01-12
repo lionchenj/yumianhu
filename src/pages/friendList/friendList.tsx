@@ -106,7 +106,7 @@ export class friendList extends React.Component<friendListProps, friendListState
     
         if (redirectToLogin) {
             const to = {
-                pathname: "/home"
+                pathname: "/home?type=MyTab"
             }
             return <Redirect to={to} />
         }
@@ -152,7 +152,7 @@ export class friendList extends React.Component<friendListProps, friendListState
                     <div className="nav-title">我的好友</div>
                 </NavBar> */}
                 <div className="iframe-tab-1">
-                    <iframe src={"https://dev170.weibanker.cn/chenjj/www/im/list.html?assToken="+accessToken}
+                    <iframe src={"https://www.shuaishou123.com/im/list.html?assToken="+accessToken}
                             height={height}
                             width={width}
                             scrolling="0"

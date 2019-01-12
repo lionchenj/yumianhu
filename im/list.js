@@ -47,13 +47,13 @@ UnreadCount = JSON.parse(UnreadCounts)||[];
   $.ajax({
     type: "POST",
     url:
-      "https://dev170.weibanker.cn/hongjh/www/yumianhu/api?url=getRongCloudToKen",
+      "https://dwww.shuaishou123.com/api?url=getRongCloudToKen",
     data: { access_token: theRequest.assToken },
     dataType: "json",
     success: function(data) {
       if (data.errno == 401) {
         window.location.href =
-          "https://dev170.weibanker.cn/chenjj/www/shuaishou/index.html";
+          "https://www.shuaishou123.com/index.html";
         return;
       }
       console.log(data.data.token);
@@ -183,7 +183,7 @@ let friendsList = [];
 function getlist(assToken) {
   $.ajax({
     type: "POST",
-    url: "https://dev170.weibanker.cn/hongjh/www/yumianhu/api?url=myFriendsListRecord",
+    url: "https://dwww.shuaishou123.com/api?url=myFriendsListRecord",
     data: { access_token: assToken },
     dataType: "json",
     success: function(data) {
@@ -220,7 +220,7 @@ function getlist(assToken) {
               $("#im_list").append(messageStr);
                 $(".friend_list").on("click",function (e) {
                     console.log(e)
-                window.location.href="https://dev170.weibanker.cn/chenjj/www/im/im.html?userid="+e.currentTarget.dataset.id+"&assToken="+e.currentTarget.dataset.token;    
+                window.location.href="https://www.shuaishou123.com/im/im.html?userid="+e.currentTarget.dataset.id+"&assToken="+e.currentTarget.dataset.token;    
                 })
         })
       }
@@ -245,5 +245,5 @@ function setCookie(name, value) {
   });
 //回退---------------
 $(".im_back").on("click", function() {
-  window.location.href = "https://dev170.weibanker.cn/chenjj/www/shuaishou/index.html";
+  window.location.href = "https://www.shuaishou123.com/index.html";
 });

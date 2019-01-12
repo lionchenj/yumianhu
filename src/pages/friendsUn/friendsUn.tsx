@@ -8,7 +8,7 @@ import { model } from '../../model/model';
 import king from "../../assets/my_VIP.png";
 import defaults from "../../assets/default.png";
 import { Redirect } from "react-router-dom";
-
+let tab: "HomeTab"|"MyTab";
 interface friendsUnProps {
     history: History
 }
@@ -102,6 +102,16 @@ export class friendsUn extends React.Component<friendsUnProps, friendsUnState> {
         })
     }
     componentDidMount() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = {type:''};
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+            theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        tab = theRequest.type == 'MyTab'?'MyTab':'HomeTab';
         this.getUnFriend();
     }
 
@@ -110,7 +120,7 @@ export class friendsUn extends React.Component<friendsUnProps, friendsUnState> {
     
         if (redirectToLogin) {
             const to = {
-                pathname: "/home"
+                pathname: "/home?type="+tab
             }
             return <Redirect to={to} />
         }

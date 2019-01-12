@@ -206,6 +206,19 @@ export class Home extends React.Component<HomeProps, HomeState> {
         
     }
     public componentDidMount() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = {type:''};
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+            theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        let tab: "HomeTab"|"MyTab" = theRequest.type == 'MyTab'?'MyTab':'HomeTab';
+        this.setState({
+            selectedTab: tab
+        })
         this.getBanner();
         this.getUserInfo();
         this.getFriendsList();
@@ -397,7 +410,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                             ...this.state,
                                             selectedTab: "MyTab"
                                         })
-                                        this.props.history.push("#MyTab")
+                                        this.props.history.push("#MyTab");
                                         console.log('tabbar')
                                         this.getUserInfo()
                                     }
@@ -435,11 +448,11 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                             </div>
                                         </div>
                                         <div className="my_info_friends after">
-                                            <div className="my_friends">
+                                            <div className="my_friends" onClick={()=>{this.props.history.push("/friendList")}}>
                                                 <div>我的好友</div>
                                                 <div>{this.state.userInfo && this.state.userInfo.friends_count}</div>
                                             </div>
-                                            <div className="my_friends">
+                                            <div className="my_friends" onClick={()=>{this.props.history.push("/friendsUn?type=MyTab")}}>
                                                 <div>待通过</div>
                                                 <div>{this.state.userInfo && this.state.userInfo.stay_by}</div>
                                             </div>
@@ -458,7 +471,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                         </List.Item>
                                         <List.Item
                                             thumb= {my_topass}
-                                            onClick={()=>{this.props.history.push("/friendsUn")}}
+                                            onClick={()=>{this.props.history.push("/friendsUn?type=MyTab")}}
                                             arrow="horizontal"
                                             >待通过
                                         </List.Item>
