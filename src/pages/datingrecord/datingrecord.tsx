@@ -58,7 +58,7 @@ export class datingrecord extends React.Component<datingrecordProps, datingrecor
 
     onRedirectBack = () => {
         const history = this.props.history
-        history.goBack()
+        history.go(-1)
     }
 
     componentDidMount() {

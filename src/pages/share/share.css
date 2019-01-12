@@ -1,0 +1,29 @@
+.share_img{
+    height: 4.51rem;
+    width: 3.43rem;
+    margin: auto;
+    padding-top: .5rem;
+    position: relative;
+}
+.share_head{
+    position: absolute;
+    top: .2rem;
+    left: 1.45rem;
+    height: .5rem;
+    width: .5rem;
+}
+.share_name{
+    position: absolute;
+    top: .9rem;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: .16rem;
+}
+.QR_code{
+    position: absolute;
+    top: 2rem;
+    left: .83rem;
+    height: 1.78rem;
+    width: 1.78rem;
+}

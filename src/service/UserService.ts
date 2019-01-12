@@ -56,8 +56,13 @@ export class UserService extends ServiceBase {
     }
     //登出
     public logout() {
-        ServiceBase.accessToken = ""
-        UserStorage.clearAccessToken()
+        ServiceBase.accessToken = "";
+        UserStorage.clearAccessToken();
+        UserService.Instance.getMemberOutTime().then( () => {}).catch ( err => { console.log(err.errmsg) });
+    }
+    //登出判断
+    public async getMemberOutTime(): Promise<void> {
+        await this.httpPost("getMemberOutTime")
     }
     //获取用户信息
     public async getUserInfo(): Promise<model.User> {
@@ -77,7 +82,10 @@ export class UserService extends ServiceBase {
         }
         return await this.httpPost("retrievePassword", params, false)
     }
-
+    //轮播
+    public async banner(): Promise<any> {
+        return await this.httpPost("banner")
+    }
     // 修改头像
     public async updateHead(avatar: File): Promise<string> {
         const headImgUrl = await this.uploadFile(avatar)

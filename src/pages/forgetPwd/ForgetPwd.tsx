@@ -46,8 +46,8 @@ export class ForgetPwd extends React.Component<ForgetPwdProps, ForgetPwdState> {
         })
     }
     onRedirectBack = () => {
-        const history = this.props.history
-        history.goBack()
+        const history = this.props.history;
+        history.go(-1);
     }
 
     onPhoneBlur = (value: string) => {

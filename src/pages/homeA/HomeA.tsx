@@ -2,7 +2,6 @@ import * as React from 'react';
 import { TabBar, List, NavBar, Modal, Carousel} from "antd-mobile";
 import { History, Location } from "history";
 import { UserStorage } from "../../storage/UserStorage";
-import "./Home.css"
 
 import registered from "../../assets/icon_registered.png"
 import viplevel from "../../assets/icon_viplevel.png"
@@ -29,12 +28,12 @@ import { UserService } from '../../service/UserService';
 import { UIUtil } from '../../utils/UIUtil';
 
 
-interface HomeProps {
+interface HomeAProps {
     history: History
     location: Location
 }
 
-interface HomeState {
+interface HomeAState {
     selectedTab: "HomeTab"|"MyTab",
     userInfo: any,
     list: any,
@@ -47,7 +46,7 @@ interface HomeState {
     imgHeight:string,
 }
 const pageheight = window.innerHeight-95;
-export class Home extends React.Component<HomeProps, HomeState> {
+export class HomeA extends React.Component<HomeAProps, HomeAState> {
     rData: any
     lv: any
     avatarInput: any
@@ -55,7 +54,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
     min:number
     max:number
     interva: any
-    constructor(props: HomeProps) {
+    constructor(props: HomeAProps) {
         super(props)
          //   const dataSource = new ListView.DataSource({
         //     rowHasChanged: (row1: model.TransactionItem, row2: model.TransactionItem) => row1 !== row2,
@@ -184,7 +183,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
     getUserInfo = () => {
         UserService.Instance.getUserInfo().then( userInfo => {
             let userInfos = JSON.stringify(userInfo);
-            UserStorage.setCookie('userinfoA',userInfos);
+            UserStorage.setCookie('userinfoB',userInfos);
             this.setState({
                 ...this.state,
                 userInfo: userInfo
@@ -204,7 +203,6 @@ export class Home extends React.Component<HomeProps, HomeState> {
         this.getUserInfo();
         this.getFriendsList();
     }
-    
 
     public render() {
         let list = [];
@@ -346,8 +344,8 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                     </Carousel>
                                 </div>
                                 <div className="tab">
-                                    <div className="tabA">店小二</div>
-                                    <div className="" onClick={()=>{this.props.history.push("/homeA");}}>小掌柜</div>
+                                    <div className="" onClick={()=>{this.props.history.push("/home");}}>店小二</div>
+                                    <div className="tabB">小掌柜</div>
                                     <div className="" onClick={()=>{this.props.history.push("/homeB");}}>大掌柜</div>
                                 </div>    
                                 <List className="bg_w padding_tb">

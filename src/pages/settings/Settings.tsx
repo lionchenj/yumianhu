@@ -27,7 +27,7 @@ export class Settings extends React.Component<SettingsProps, SettingsState> {
 
     onRedirectBack = () => {
         const history = this.props.history
-        history.goBack()
+        history.go(-1)
     }
 
     public render() {

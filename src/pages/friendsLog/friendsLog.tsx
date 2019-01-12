@@ -57,8 +57,8 @@ export class friendsLog extends React.Component<friendsLogProps, friendsLogState
         
     }
     onRedirectBack = () => {
-        const history = this.props.history
-        history.goBack()
+        const history = this.props.history;
+        history.go(-1);
     }
     onEndReached = (event:any) => {
         // load new data

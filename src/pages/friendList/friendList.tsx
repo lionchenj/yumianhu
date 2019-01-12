@@ -60,8 +60,8 @@ export class friendList extends React.Component<friendListProps, friendListState
     }
 
     onRedirectBack = () => {
-        const history = this.props.history
-        history.goBack()
+        const history = this.props.history;
+        history.go(-1);
     }
     onEndReached = (event:any) => {
         if (this.state.isLoading && !this.state.hasMore) {

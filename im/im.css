@@ -213,8 +213,15 @@ img {
 .im_list{
     margin-top: 45px;
 }
-.friend_count{
+.friend_count_msg{
     position: absolute;
+    top:7px;
     right: 20px;
     font-size: 16px;
+}
+.friend_count_online{
+  position: absolute;
+  top:30px;
+  right: 20px;
+  font-size: 16px;
 }

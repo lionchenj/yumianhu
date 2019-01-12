@@ -6,7 +6,7 @@ let token = "",
   user_name = "",
   UnreadCount = [];
 let UnreadCounts = getCookie();
-UnreadCount = JSON.parse(UnreadCounts);
+UnreadCount = JSON.parse(UnreadCounts)||[];
   function frontOneHour(fmt) {
     var currentTime = new Date(new Date().getTime());
     var o = {
@@ -212,7 +212,10 @@ function getlist(assToken) {
                           <span>${data.level}等级</span>
                       </div>
                   </div>
-                  <div class="friend_count">${count==0?'':'新留言'}</div>
+                  <div class="friends_info">
+                    <div class="friend_count_msg">${count==0?'':'新留言'}</div>
+                    <div class="friend_count_online">${data.online==0?'':'在线'}</div>
+                  </div>
               </div>`;
               $("#im_list").append(messageStr);
                 $(".friend_list").on("click",function (e) {

@@ -5,8 +5,8 @@
   text-align: center;
   font-size: 18px;
   color: #fff;
-  height: .45rem;
-  line-height: .45rem;
+  height: 0.45rem;
+  line-height: 0.45rem;
 }
 .am-navbar-title {
   color: #fff !important;
@@ -47,7 +47,7 @@ img {
   display: flex;
   padding: 0.1rem;
 }
-.friend_list+.friend_list{
+.friend_list + .friend_list {
   border-top: 1px solid #eeeeee;
 }
 .friend_list .head_img {
@@ -65,7 +65,7 @@ img {
   color: #666666;
   line-height: 1;
   font-size: 0.14rem;
-  padding-top: .02rem;
+  padding-top: 0.02rem;
 }
 .friend_list .friends_info .level {
   display: flex;
@@ -83,18 +83,18 @@ img {
   font-size: 0.12rem;
   margin-left: 0.05rem;
 }
-.friends_accept{
+.friends_accept {
   position: absolute;
-    right: .2rem;
-    top: .125rem;
+  right: 0.2rem;
+  top: 0.125rem;
 }
-.friends_accept button{
-    width: .65rem;
-    height: .35rem;
-    background: #4DD865;
-    border: none;
-    border-radius: .05rem;
-    color: #fff;
+.friends_accept button {
+  width: 0.65rem;
+  height: 0.35rem;
+  background: #4dd865;
+  border: none;
+  border-radius: 0.05rem;
+  color: #fff;
 }
 .dialog-con {
   position: fixed;
@@ -175,7 +175,7 @@ img {
   text-align: center;
   position: relative;
 }
-.my_bg{
+.my_bg {
   background: url("../../assets/my_bg.png") no-repeat;
   background-size: 100% auto;
 }
@@ -185,18 +185,18 @@ img {
   margin: auto;
   position: relative;
 }
-.my_info_container{
+.my_info_container {
   color: #fff;
 }
-.my_level{
+.my_level {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: .05rem;
+  padding: 0.05rem;
 }
-.my_level img{
-  width: .18rem;
-  height: .18rem;
+.my_level img {
+  width: 0.18rem;
+  height: 0.18rem;
 }
 .my_haed_input {
   position: absolute;
@@ -207,43 +207,79 @@ img {
   height: 0.7rem;
   overflow: hidden;
 }
-.my_nickname{
-  padding: .1rem;
+.my_nickname {
+  padding: 0.1rem;
 }
 .my_info_friends {
   display: flex;
   align-items: center;
-  height: .7rem;
+  height: 0.7rem;
   background: #fff;
-  border-radius: .1rem;
-  box-shadow: 0 2px 20px 0 #FFDDD7;
+  border-radius: 0.1rem;
+  box-shadow: 0 2px 20px 0 #ffddd7;
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
 }
 .my_friends {
-  padding: .1rem 0;
+  padding: 0.1rem 0;
   width: 50%;
 }
 .my_friends div {
-  margin-top: .05rem;
+  margin-top: 0.05rem;
 }
 .after::after {
   content: "";
-  border-right: 1px solid #D8D8D8;
+  border-right: 1px solid #d8d8d8;
   position: relative;
   right: 50%;
-  margin: .05rem 0;
+  margin: 0.05rem 0;
 }
-.profile_list .am-list-item,.friendsLog .am-list-item {
-  height: .6rem;
+.profile_list .am-list-item,
+.friendsLog .am-list-item {
+  height: 0.6rem;
 }
-.viewheight{
+.viewheight {
   height: calc(56vh - 149px);
 }
 /* 交友记录 */
-.friendsLog .am-list-item img{
-  width: .4rem;
-  height: .4rem;
+.friendsLog .am-list-item img {
+  width: 0.4rem;
+  height: 0.4rem;
+}
+.home-banner{
+  height: 1.8rem;
+}
+.tab {
+  width: 90%;
+  margin: .15rem auto 0;
+  display: flex;
+  color: #ff4a43;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #ff4a43;
+  border-radius: .1rem;
+  font-family: PingFangSC-Regular;
+  font-size: 14px;
+  letter-spacing: -0.17px;
+  text-align: center;
+}
+.tab div{
+  width: 33.3%;
+  padding: .1rem 0;
+}
+.tabA {
+  border-radius: .06rem 0 0 .06rem;
+  background: #ff4a43;
+  color: #ffffff;
+}
+.tabB {
+  background: #ff4a43;
+  color: #ffffff;
+}
+.tabC {
+  border-radius: 0 .06rem .06rem 0;
+  background: #ff4a43;
+  color: #ffffff;
 }
