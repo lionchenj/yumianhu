@@ -177,17 +177,6 @@ export class Home extends React.Component<HomeProps, HomeState> {
             UIUtil.showError(err)
         })
     }
-    //好友列表
-    getFriendsList = () => {
-        UserService.Instance.myFriendsList().then( list => {
-                this.setState({
-                    ...this.state,
-                    list: list
-                })
-        }).catch ( err => {
-            
-        })
-    }
     getUserInfo = () => {
         UserService.Instance.getUserInfo().then( userInfo => {
             let userInfos = JSON.stringify(userInfo);
@@ -223,7 +212,6 @@ export class Home extends React.Component<HomeProps, HomeState> {
         })
         this.getBanner();
         this.getUserInfo();
-        this.getFriendsList();
     }
     
 
@@ -329,7 +317,6 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                         })
                                         this.props.history.push("#HomeTab");
                                         UserStorage.setCookie('type','HomeTab');
-                                        this.getFriendsList();
                                     }
                                 }
                                 icon={<div style={{
@@ -370,13 +357,13 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                 </div>
                                 <div className="tab">
                                     <div className="" onClick={()=>{
-                                        UIUtil.showInfo("暂未开通")
-                                        // this.props.history.push("/homeA");
+                                        // UIUtil.showInfo("暂未开通")
+                                        this.props.history.push("/homeB");
                                         }}>店小二</div>
                                     <div className="tabB">小掌柜</div>
                                     <div className="" onClick={()=>{
-                                        UIUtil.showInfo("暂未开通")
-                                        // this.props.history.push("/homeB");
+                                        // UIUtil.showInfo("暂未开通")
+                                        this.props.history.push("/homeC");
                                         }}>大掌柜</div>
                                 </div>    
                                 <List className="bg_w padding_tb">

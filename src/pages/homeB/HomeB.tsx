@@ -90,10 +90,10 @@ export class HomeB extends React.Component<HomeBProps, HomeBState> {
         let index = e.currentTarget.dataset.id;
         console.log("onTapHomeMenu", index)
         if (index == 0) {
-            this.props.history.push("/registered");
+            this.props.history.push("/registeredB");
         } else if (index == 1) {
             //关注列表
-            UserService.Instance.focusFriendsList().then( res => {
+            UserService.Instance.focusFriendsListB().then( res => {
                 let levelupF = [];
                 console.log(res)
                 levelupF = res;
@@ -110,7 +110,7 @@ export class HomeB extends React.Component<HomeBProps, HomeBState> {
                 UIUtil.showError(err)
             })
         } else if (index == 2) {
-            this.props.history.push("/friendsUn");
+            this.props.history.push("/friendsUnB");
         } else if (index == 3) {
             this.props.history.push("/share");
         }
@@ -129,7 +129,7 @@ export class HomeB extends React.Component<HomeBProps, HomeBState> {
                 return;
             }
         }
-        UserService.Instance.focusFriends(id).then( avatarUrl => {
+        UserService.Instance.focusFriendsB(id).then( avatarUrl => {
             let levelupF = this.state.levelupF;
             levelupF.map((res:any)=>{
                 if(id == res.id){
@@ -169,21 +169,10 @@ export class HomeB extends React.Component<HomeBProps, HomeBState> {
             UIUtil.showError(err)
         })
     }
-    //好友列表
-    getFriendsList = () => {
-        UserService.Instance.myFriendsList().then( list => {
-                this.setState({
-                    ...this.state,
-                    list: list
-                })
-        }).catch ( err => {
-            
-        })
-    }
     getUserInfo = () => {
         UserService.Instance.getUserInfo().then( userInfo => {
             let userInfos = JSON.stringify(userInfo);
-            UserStorage.setCookie('userinfoC',userInfos);
+            UserStorage.setCookie('userinfoB',userInfos);
             this.setState({
                 ...this.state,
                 userInfo: userInfo
@@ -199,11 +188,10 @@ export class HomeB extends React.Component<HomeBProps, HomeBState> {
         
     }
     public componentDidMount() {
+        UserStorage.setCookie('typepage','B');
         this.getBanner();
         this.getUserInfo();
-        this.getFriendsList();
     }
-    
 
     public render() {
         let list = [];
@@ -221,7 +209,7 @@ export class HomeB extends React.Component<HomeBProps, HomeBState> {
                         <div className="level_img">
                             <img src={king} alt=""/>
                         </div>
-                        <span>{this.state.levelupF[i].level != ''?this.state.levelupF[i].level:'0'}等级</span>
+                        <span>{this.state.levelupF[i].levelB != ''?this.state.levelupF[i].levelB:'0'}等级</span>
                     </div>
                     {/* <div className="text">{this.state.levelupF[i].user_type != '1'?'网B':'网A'}</div> */}
                     <div className="text index_follow" data-id={this.state.levelupF[i].id} onClick={this.onFollow}>
@@ -304,8 +292,8 @@ export class HomeB extends React.Component<HomeBProps, HomeBState> {
                                             ...this.state,
                                             selectedTab: "HomeTab"
                                         })
+                                        UserStorage.setCookie('type','HomeTab');
                                         this.props.history.push("#HomeTab");
-                                        this.getFriendsList();
                                     }
                                 }
                                 icon={<div style={{
@@ -345,9 +333,9 @@ export class HomeB extends React.Component<HomeBProps, HomeBState> {
                                     </Carousel>
                                 </div>
                                 <div className="tab">
-                                    <div className="" onClick={()=>{this.props.history.push("/home");}}>店小二</div>
-                                    <div className="" onClick={()=>{this.props.history.push("/homeA");}}>小掌柜</div>
-                                    <div className="tabC">大掌柜</div>
+                                    <div className="tabA">店小二</div>
+                                    <div className="" onClick={()=>{this.props.history.push("/home");}}>小掌柜</div>
+                                    <div className="" onClick={()=>{this.props.history.push("/homeC");}}>大掌柜</div>
                                 </div>    
                                 <List className="bg_w padding_tb">
                                     <div className="index_tab">
@@ -383,8 +371,8 @@ export class HomeB extends React.Component<HomeBProps, HomeBState> {
                                             ...this.state,
                                             selectedTab: "MyTab"
                                         })
-                                        this.props.history.push("#MyTab")
-                                        console.log('tabbar')
+                                        this.props.history.push("#MyTab");
+                                        UserStorage.setCookie('type','MyTab');
                                         this.getUserInfo()
                                     }
                                 }
@@ -421,11 +409,11 @@ export class HomeB extends React.Component<HomeBProps, HomeBState> {
                                             </div>
                                         </div>
                                         <div className="my_info_friends after">
-                                            <div className="my_friends">
+                                            <div className="my_friends" onClick={()=>{this.props.history.push("/friendListB")}}>
                                                 <div>我的好友</div>
                                                 <div>{this.state.userInfo && this.state.userInfo.friends_count}</div>
                                             </div>
-                                            <div className="my_friends">
+                                            <div className="my_friends" onClick={()=>{this.props.history.push("/friendsUnB")}}>
                                                 <div>待通过</div>
                                                 <div>{this.state.userInfo && this.state.userInfo.stay_by}</div>
                                             </div>
@@ -435,19 +423,20 @@ export class HomeB extends React.Component<HomeBProps, HomeBState> {
                                         <List.Item
                                             thumb= {my_friends}
                                             arrow="horizontal"
-            
-                                            onClick={()=>{
-                                                const accessToken = UserStorage.getCookie("User.AccessTokenKey");
-                                                window.location.href="https://dev170.weibanker.cn/chenjj/www/im/list.html?assToken="+accessToken;
-                                            }}
-                                            // onClick={()=>{this.props.history.push("/friendList")}}
+                                            onClick={()=>{this.props.history.push("/friendListB")}}
                                             >我的好友
                                         </List.Item>
                                         <List.Item
                                             thumb= {my_topass}
-                                            onClick={()=>{this.props.history.push("/friendsUn")}}
+                                            onClick={()=>{this.props.history.push("/friendsUnB")}}
                                             arrow="horizontal"
                                             >待通过
+                                        </List.Item>
+                                        <List.Item
+                                            thumb= {my_topass}
+                                            onClick={()=>{this.props.history.push("/friendsLogB")}}
+                                            arrow="horizontal"
+                                            >交友记录
                                         </List.Item>
                                         <List.Item
                                             thumb= {my_setting}

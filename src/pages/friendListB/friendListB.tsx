@@ -15,12 +15,12 @@ import { model } from '../../model/model';
 
 
 
-interface friendListProps {
+interface friendListBProps {
     history: History
 }
 
 
-interface friendListState {
+interface friendListBState {
     tabIndex:number,
     height: number,
     visible: boolean
@@ -38,11 +38,11 @@ interface friendListState {
 let width = window.innerWidth;
 let height = window.innerHeight;
 // const bodyHeight = (window.innerHeight/100 - 0.45) + 'rem';
-export class friendList extends React.Component<friendListProps, friendListState> {
+export class friendListB extends React.Component<friendListBProps, friendListBState> {
     rData: any
     lv: any
 
-    constructor(props: friendListProps) {
+    constructor(props: friendListBProps) {
         super(props);
         
           const dataSource = new ListView.DataSource({
@@ -106,7 +106,7 @@ export class friendList extends React.Component<friendListProps, friendListState
     
         if (redirectToLogin) {
             const to = {
-                pathname: "/home?type=MyTab"
+                pathname: "/homeB?type=MyTab"
             }
             return <Redirect to={to} />
         }
@@ -152,7 +152,7 @@ export class friendList extends React.Component<friendListProps, friendListState
                     <div className="nav-title">我的好友</div>
                 </NavBar> */}
                 <div className="iframe-tab-1">
-                    <iframe src={false? "http://www.shuaishou123.com/im/list.html?assToken="+accessToken:"https://dev170.weibanker.cn/chenjj/www/im/list.html?assToken="+accessToken}
+                    <iframe src={false? "http://www.shuaishou123.com/im/listB.html?assToken="+accessToken:"https://dev170.weibanker.cn/chenjj/www/im/listB.html?assToken="+accessToken}
                             height={height}
                             width={width}
                             scrolling="0"

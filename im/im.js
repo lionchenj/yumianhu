@@ -6,7 +6,7 @@ let token = "",
   user_name = "",
   ishasMsg = true,
   oldLog = [];
-let api_url = true ? 'http://www.shuaishou123.com/sszg/' : 'https://dev170.weibanker.cn/hongjh/www/yumianhu/'
+let api_url = false ? 'http://www.shuaishou123.com/sszg/' : 'https://dev170.weibanker.cn/hongjh/www/yumianhu/'
 function frontOneHour(fmt) {
   var currentTime = new Date(new Date().getTime());
   var o = {

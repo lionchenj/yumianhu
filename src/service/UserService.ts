@@ -42,6 +42,28 @@ export class UserService extends ServiceBase {
         }
         return await this.httpPost("register", params, true)
     }
+    //注册
+    public async registerB(mobile: string, code: string, name: string, password: string, wechat_number:string): Promise<void> {
+        const params = {
+            mobile: mobile,
+            password: password,
+            verification_code: code,
+            name: name,
+            wechat_number: wechat_number
+        }
+        return await this.httpPost("registerB", params, true)
+    }
+    //注册
+    public async registerC(mobile: string, code: string, name: string, password: string, wechat_number:string): Promise<void> {
+        const params = {
+            mobile: mobile,
+            password: password,
+            verification_code: code,
+            name: name,
+            wechat_number: wechat_number
+        }
+        return await this.httpPost("registerC", params, true)
+    }
     //登陆
     public async login(mobile: string, password: string, activation_code?: string): Promise<void> {
         const params = {
@@ -105,14 +127,44 @@ export class UserService extends ServiceBase {
         const resp = await this.httpPost("myFriendsList");
         return resp.data as model.FriendsList
     }
+    //好友列表
+    public async myFriendsListB(): Promise<any> {
+        const resp = await this.httpPost("myFriendsListB");
+        return resp.data as model.FriendsList
+    }
+    //好友列表
+    public async myFriendsListC(): Promise<any> {
+        const resp = await this.httpPost("myFriendsListC");
+        return resp.data as model.FriendsList
+    }
     //好友记录
     public async myFriendsListRecord(): Promise<any> {
         const resp = await this.httpPost("myFriendsListRecord");
         return resp.data as model.FriendsList
     }
+    //好友记录
+    public async myFriendsListRecordB(): Promise<any> {
+        const resp = await this.httpPost("myFriendsListRecordB");
+        return resp.data as model.FriendsList
+    }
+    //好友记录
+    public async myFriendsListRecordC(): Promise<any> {
+        const resp = await this.httpPost("myFriendsListRecordC");
+        return resp.data as model.FriendsList
+    }
     //升级列表
     public async focusFriendsList(): Promise<any> {
         const resp = await this.httpPost("focusFriendsList")
+        return resp.data as model.FriendsList
+    }
+    //升级列表
+    public async focusFriendsListB(): Promise<any> {
+        const resp = await this.httpPost("focusFriendsListB")
+        return resp.data as model.FriendsList
+    }
+    //升级列表
+    public async focusFriendsListC(): Promise<any> {
+        const resp = await this.httpPost("focusFriendsListC")
         return resp.data as model.FriendsList
     }
     //关注
@@ -122,9 +174,33 @@ export class UserService extends ServiceBase {
         }
         return await this.httpPost("focusFriends", params, true)
     }
+    //关注
+    public async focusFriendsB(id: string): Promise<void> {
+        const params = {
+            mobile:id
+        }
+        return await this.httpPost("focusFriendsB", params, true)
+    }
+    //关注
+    public async focusFriendsC(id: string): Promise<void> {
+        const params = {
+            mobile:id
+        }
+        return await this.httpPost("focusFriendsC", params, true)
+    }
     //待接受好友列表
     public async checkFriendsList(): Promise<any> {
         const resp = await this.httpPost("checkFriendsList");
+        return resp.data as model.FriendsList
+    }
+    //待接受好友列表
+    public async checkFriendsListB(): Promise<any> {
+        const resp = await this.httpPost("checkFriendsListB");
+        return resp.data as model.FriendsList
+    }
+    //待接受好友列表
+    public async checkFriendsListC(): Promise<any> {
+        const resp = await this.httpPost("checkFriendsListC");
         return resp.data as model.FriendsList
     }
     //接受好友
@@ -135,6 +211,20 @@ export class UserService extends ServiceBase {
         return await this.httpPost("checkFriends", params, true)
     }
     //接受好友
+    public async checkFriendsB(mobile: string): Promise<void> {
+        const params = {
+            mobile:mobile
+        }
+        return await this.httpPost("checkFriendsB", params, true)
+    }
+    //接受好友
+    public async checkFriendsC(mobile: string): Promise<void> {
+        const params = {
+            mobile:mobile
+        }
+        return await this.httpPost("checkFriendsC", params, true)
+    }
+    //接受好友token
     public async getRongCloudToKen(): Promise<any> {
         const resp = await this.httpPost("getRongCloudToKen");
         return resp.data as model.data

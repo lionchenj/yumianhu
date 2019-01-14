@@ -1,15 +1,15 @@
 html {
   font-size: 625%;
   overflow-x: hidden;
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
 }
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  max-width: 540px;
-  min-width: 320px;
-  min-height: 100vh;
+  overflow-x:hidden;
+  width:100%;
   background: #fff !important;
+  margin: auto;
 }
 .im_navbar {
   width: 100%;

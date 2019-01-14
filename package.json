@@ -50,7 +50,7 @@
     "style-loader": "^0.22.1",
     "typescript": "^2.9.2"
   },
-  "homepage": "http://www.shuaishou123.com/",
+  "homepage": "https://dev170.weibanker.cn/chenjj/www/shuaishou/",
   "proxy": {
     "/shadow/vatc/*": {
       "target": "http://www.shuaishou123.com/sszg/",

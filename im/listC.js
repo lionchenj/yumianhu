@@ -188,7 +188,7 @@ let friendsList = [];
 function getlist(assToken) {
   $.ajax({
     type: "POST",
-    url: api_url + "api?url=myFriendsListRecord",
+    url: api_url + "api?url=myFriendsListRecordC",
     data: { access_token: assToken },
     dataType: "json",
     success: function(data) {
