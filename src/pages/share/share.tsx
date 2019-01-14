@@ -8,7 +8,10 @@ import defaults from "../../assets/default.png"
 import { UserStorage } from "../../storage/UserStorage";
 import { Redirect } from "react-router-dom";
 import "./share.css"
-const refUrl = `https://copy.im/a/zhgfxt`
+//判断手机系统
+var u = navigator.userAgent;
+var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
 
 interface shareProps {
     history: History
@@ -18,6 +21,7 @@ interface shareProps {
 interface shareState {
     redirectToLogin: boolean
     height: number
+    refUrl: string
 
 }
 let userinfoA = UserStorage.getCookie('userinfoA')||'';
@@ -29,8 +33,8 @@ export class share extends React.Component<shareProps, shareState> {
         super(props);
           this.state = {
             height:  document.documentElement.clientHeight - 200,
-            redirectToLogin: false
-
+            redirectToLogin: false,
+            refUrl: 'https://copy.im/a/zhgfxt'
           };
         
     }
@@ -43,6 +47,11 @@ export class share extends React.Component<shareProps, shareState> {
     }
 
     componentDidMount() {
+        if(isiOS){
+            this.setState({
+                refUrl: 'https://copy.im/a/zhgfxt'
+            })
+        }
     }
 
     public render() {
@@ -67,7 +76,7 @@ export class share extends React.Component<shareProps, shareState> {
                     <div className="share_name">{userinfo.nickname}</div>
                     <img src={share_bg} alt=""/>
                     <div className="QR_code">
-                        <QRCode value={refUrl} size={178} />
+                        <QRCode value={this.state.refUrl} size={178} />
                     </div>
                     {/* <img className="QR_code" src={QR_code} alt=""/> */}
                 </div>

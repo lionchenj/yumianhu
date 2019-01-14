@@ -47,6 +47,7 @@ interface HomeState {
     imgHeight:string,
 }
 const pageheight = window.innerHeight-95;
+const pagewidth = window.innerWidth;
 export class Home extends React.Component<HomeProps, HomeState> {
     rData: any
     lv: any
@@ -215,7 +216,8 @@ export class Home extends React.Component<HomeProps, HomeState> {
             theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
             }
         }
-        let tab: "HomeTab"|"MyTab" = theRequest.type == 'MyTab'?'MyTab':'HomeTab';
+        // let tab: "HomeTab"|"MyTab" = theRequest.type == 'MyTab'?'MyTab':'HomeTab';
+        let tab: "HomeTab"|"MyTab" = UserStorage.getCookie('type') == 'MyTab'?'MyTab':'HomeTab'
         this.setState({
             selectedTab: tab
         })
@@ -237,6 +239,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 <div className="friends_info">
                     <div className="text">{this.state.levelupF[i].nickname != ''?this.state.levelupF[i].nickname:''}</div>
                     <div className="text">{this.state.levelupF[i].mobile != ''?this.state.levelupF[i].mobile:'0'}</div>
+                    <div className="text">{this.state.levelupF[i].wechat_number != ''?this.state.levelupF[i].wechat_number:''}</div>
                     <div className="text">
                         <div className="level_img">
                             <img src={king} alt=""/>
@@ -248,7 +251,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                         <div className="level_img">
                             <img src={this.state.levelupF[i].status != '1'?follow:follow_n} alt=""/>
                         </div>
-                        <span>{this.state.levelupF[i].status != '1'?'已关注':'未关注'}</span>
+                        <span>{this.state.levelupF[i].status != '1'?this.state.levelupF[i].status != '3'?'待确认':'已关注':'未关注'}</span>
                     </div>
                 </div>
             </div>
@@ -325,6 +328,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                             selectedTab: "HomeTab"
                                         })
                                         this.props.history.push("#HomeTab");
+                                        UserStorage.setCookie('type','HomeTab');
                                         this.getFriendsList();
                                     }
                                 }
@@ -342,7 +346,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                 /> }
                             >
                             
-                               <div style={{height:pageheight}}>
+                               <div style={{height:pageheight,width:pagewidth}}>
                                <div className="home-banner">
                                     <Carousel autoplay dots>
                                         {this.state.banners.map((val:any, index:string) => (
@@ -411,7 +415,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                             selectedTab: "MyTab"
                                         })
                                         this.props.history.push("#MyTab");
-                                        console.log('tabbar')
+                                        UserStorage.setCookie('type','MyTab');
                                         this.getUserInfo()
                                     }
                                 }

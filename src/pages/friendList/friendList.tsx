@@ -152,7 +152,7 @@ export class friendList extends React.Component<friendListProps, friendListState
                     <div className="nav-title">我的好友</div>
                 </NavBar> */}
                 <div className="iframe-tab-1">
-                    <iframe src={"https://www.shuaishou123.com/im/list.html?assToken="+accessToken}
+                    <iframe src={true? "http://www.shuaishou123.com/im/list.html?assToken="+accessToken:"https://dev170.weibanker.cn/chenjj/www/im/list.html?assToken="+accessToken}
                             height={height}
                             width={width}
                             scrolling="0"

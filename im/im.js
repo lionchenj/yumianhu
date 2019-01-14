@@ -6,6 +6,7 @@ let token = "",
   user_name = "",
   ishasMsg = true,
   oldLog = [];
+let api_url = true ? 'http://www.shuaishou123.com/sszg/' : 'https://dev170.weibanker.cn/hongjh/www/yumianhu/'
 function frontOneHour(fmt) {
   var currentTime = new Date(new Date().getTime());
   var o = {
@@ -70,13 +71,13 @@ function frontOneHour_send (fmt,time) {
   $.ajax({
     type: "POST",
     url:
-      "https://www.shuaishou123.com/api?url=getRongCloudToKen",
+      api_url + "api?url=getRongCloudToKen",
     data: { access_token: theRequest.assToken },
     dataType: "json",
     success: function(data) {
       if (data.errno == 401) {
         window.location.href =
-          "https://www.shuaishou123.com/index.html";
+          "http://www.shuaishou123.com/index.html";
         return;
       }
       console.log(data.data.token);
@@ -182,7 +183,7 @@ function frontOneHour_send (fmt,time) {
 function getUserinfo(assToken, id) {
   $.ajax({
     type: "POST",
-    url: "https://www.shuaishou123.com/api?url=getUserInfo",
+    url: api_url + "api?url=getUserInfo",
     data: { access_token: assToken },
     dataType: "json",
     success: function(data) {
@@ -194,7 +195,7 @@ function getUserinfo(assToken, id) {
   $.ajax({
     type: "POST",
     url:
-      "https://www.shuaishou123.com/api?url=getNameImages",
+      api_url + "api?url=getNameImages",
     data: { id: id },
     dataType: "json",
     success: function(data) {
@@ -283,7 +284,7 @@ $(".im_input_file").on("change", function() {
   var FileData = new FormData();
   FileData.append("imageFile", file);
   $.ajax({
-    url: "https://www.shuaishou123.com/api?url=uploadImages",
+    url: api_url + "api?url=uploadImages",
     type: "POST",
     data: FileData,
     cache: false,

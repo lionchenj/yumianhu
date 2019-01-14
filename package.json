@@ -50,10 +50,10 @@
     "style-loader": "^0.22.1",
     "typescript": "^2.9.2"
   },
-  "homepage": "https://www.shuaishou123.com/",
+  "homepage": "http://www.shuaishou123.com/",
   "proxy": {
     "/shadow/vatc/*": {
-      "target": "https://www.shuaishou123.com/",
+      "target": "http://www.shuaishou123.com/sszg/",
       "secure": false,
       "changeOrigin": true
     }

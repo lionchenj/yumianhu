@@ -6,6 +6,11 @@ let token = "",
   user_name = "",
   UnreadCount = [];
 let UnreadCounts = getCookie();
+let api_url = true ? 
+              'http://www.shuaishou123.com/sszg/' 
+              : 
+              'https://dev170.weibanker.cn/hongjh/www/yumianhu/';
+
 UnreadCount = JSON.parse(UnreadCounts)||[];
   function frontOneHour(fmt) {
     var currentTime = new Date(new Date().getTime());
@@ -47,13 +52,13 @@ UnreadCount = JSON.parse(UnreadCounts)||[];
   $.ajax({
     type: "POST",
     url:
-      "https://dwww.shuaishou123.com/api?url=getRongCloudToKen",
+      api_url + "api?url=getRongCloudToKen",
     data: { access_token: theRequest.assToken },
     dataType: "json",
     success: function(data) {
       if (data.errno == 401) {
         window.location.href =
-          "https://www.shuaishou123.com/index.html";
+          "http://www.shuaishou123.com/index.html";
         return;
       }
       console.log(data.data.token);
@@ -183,7 +188,7 @@ let friendsList = [];
 function getlist(assToken) {
   $.ajax({
     type: "POST",
-    url: "https://dwww.shuaishou123.com/api?url=myFriendsListRecord",
+    url: api_url + "api?url=myFriendsListRecord",
     data: { access_token: assToken },
     dataType: "json",
     success: function(data) {
@@ -220,7 +225,7 @@ function getlist(assToken) {
               $("#im_list").append(messageStr);
                 $(".friend_list").on("click",function (e) {
                     console.log(e)
-                window.location.href="https://www.shuaishou123.com/im/im.html?userid="+e.currentTarget.dataset.id+"&assToken="+e.currentTarget.dataset.token;    
+                window.location.href="http://www.shuaishou123.com/im/im.html?userid="+e.currentTarget.dataset.id+"&assToken="+e.currentTarget.dataset.token;    
                 })
         })
       }
@@ -243,7 +248,3 @@ function setCookie(name, value) {
   $(".im_back").on("click", function() {
     window.history.go(-1)
   });
-//回退---------------
-$(".im_back").on("click", function() {
-  window.location.href = "https://www.shuaishou123.com/index.html";
-});

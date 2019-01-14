@@ -155,7 +155,7 @@ export class UpdataPwd extends React.Component<UpdataPwdProps, UpdataPwdState> {
     
         if (redirectToLogin) {
             const to = {
-                pathname: "/setting"
+                pathname: "/settings"
             }
             return <Redirect to={to} />
         }
