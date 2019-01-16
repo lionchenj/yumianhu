@@ -179,8 +179,6 @@ export class Home extends React.Component<HomeProps, HomeState> {
     }
     getUserInfo = () => {
         UserService.Instance.getUserInfo().then( userInfo => {
-            let userInfos = JSON.stringify(userInfo);
-            UserStorage.setCookie('userinfoA',userInfos);
             this.setState({
                 ...this.state,
                 userInfo: userInfo
@@ -205,6 +203,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
             theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
             }
         }
+        UserStorage.setCookie('typepage','');
         // let tab: "HomeTab"|"MyTab" = theRequest.type == 'MyTab'?'MyTab':'HomeTab';
         let tab: "HomeTab"|"MyTab" = UserStorage.getCookie('type') == 'MyTab'?'MyTab':'HomeTab'
         this.setState({

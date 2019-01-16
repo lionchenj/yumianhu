@@ -11,7 +11,7 @@ import "./share.css"
 //判断手机系统
 var u = navigator.userAgent;
 var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-
+var typepage = '';
 
 interface shareProps {
     history: History
@@ -56,10 +56,10 @@ export class share extends React.Component<shareProps, shareState> {
 
     public render() {
         const { redirectToLogin} = this.state
-    
+        typepage = UserStorage.getCookie('typepage')||'';
         if (redirectToLogin) {
             const to = {
-                pathname: "/home"
+                pathname: "/home"+typepage
             }
             return <Redirect to={to} />
         }

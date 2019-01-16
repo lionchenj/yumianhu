@@ -8,7 +8,6 @@ import { model } from '../../model/model';
 import king from "../../assets/my_VIP.png";
 import defaults from "../../assets/default.png";
 import { Redirect } from "react-router-dom";
-let tab: "HomeTab"|"MyTab";
 interface friendsUnCProps {
     history: History
 }
@@ -92,7 +91,7 @@ export class friendsUnC extends React.Component<friendsUnCProps, friendsUnCState
     checkFriend = (e:any) => {
         let id = e.currentTarget.dataset.id;
         let name = e.currentTarget.dataset.name;
-        UserService.Instance.checkFriends(id).then( () => {
+        UserService.Instance.checkFriendsC(id).then( () => {
             const alert = Modal.alert
             alert('提示','已接受好友'+name,[
                 { text: '是', onPress: () => {this.getUnFriend()} },
@@ -111,7 +110,6 @@ export class friendsUnC extends React.Component<friendsUnCProps, friendsUnCState
             theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
             }
         }
-        tab = theRequest.type == 'MyTab'?'MyTab':'HomeTab';
         this.getUnFriend();
     }
 
@@ -120,7 +118,7 @@ export class friendsUnC extends React.Component<friendsUnCProps, friendsUnCState
     
         if (redirectToLogin) {
             const to = {
-                pathname: "/homeC?type="+tab
+                pathname: "/homeC"
             }
             return <Redirect to={to} />
         }

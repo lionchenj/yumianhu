@@ -106,7 +106,7 @@ export class friendListB extends React.Component<friendListBProps, friendListBSt
     
         if (redirectToLogin) {
             const to = {
-                pathname: "/homeB?type=MyTab"
+                pathname: "/homeB"
             }
             return <Redirect to={to} />
         }

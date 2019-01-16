@@ -35,7 +35,7 @@ export class Settings extends React.Component<SettingsProps, SettingsState> {
     public render() {
         if (this.state.redirectToLogin) {
             const to = {
-                pathname: "/home?type=MyTab"
+                pathname: "/home"
             }
             return <Redirect to={to} />
         }

@@ -90,7 +90,11 @@ export class HomeB extends React.Component<HomeBProps, HomeBState> {
         let index = e.currentTarget.dataset.id;
         console.log("onTapHomeMenu", index)
         if (index == 0) {
+            if (this.state.userInfo.level == 0) {
+                UIUtil.showInfo("暂未开通");
+            } else {
             this.props.history.push("/registeredB");
+            }
         } else if (index == 1) {
             //关注列表
             UserService.Instance.focusFriendsListB().then( res => {
@@ -170,9 +174,7 @@ export class HomeB extends React.Component<HomeBProps, HomeBState> {
         })
     }
     getUserInfo = () => {
-        UserService.Instance.getUserInfo().then( userInfo => {
-            let userInfos = JSON.stringify(userInfo);
-            UserStorage.setCookie('userinfoB',userInfos);
+        UserService.Instance.getUserInfoB().then( userInfo => {
             this.setState({
                 ...this.state,
                 userInfo: userInfo
@@ -188,6 +190,10 @@ export class HomeB extends React.Component<HomeBProps, HomeBState> {
         
     }
     public componentDidMount() {
+        let tab: "HomeTab"|"MyTab" = UserStorage.getCookie('type') == 'MyTab'?'MyTab':'HomeTab'
+        this.setState({
+            selectedTab: tab
+        })
         UserStorage.setCookie('typepage','B');
         this.getBanner();
         this.getUserInfo();
@@ -205,18 +211,19 @@ export class HomeB extends React.Component<HomeBProps, HomeBState> {
                 <div className="friends_info">
                     <div className="text">{this.state.levelupF[i].nickname != ''?this.state.levelupF[i].nickname:''}</div>
                     <div className="text">{this.state.levelupF[i].mobile != ''?this.state.levelupF[i].mobile:'0'}</div>
+                    <div className="text">{this.state.levelupF[i].wechat_number != ''?this.state.levelupF[i].wechat_number:''}</div>
                     <div className="text">
                         <div className="level_img">
                             <img src={king} alt=""/>
                         </div>
-                        <span>{this.state.levelupF[i].levelB != ''?this.state.levelupF[i].levelB:'0'}等级</span>
+                        <span>{this.state.levelupF[i].level != ''?this.state.levelupF[i].level:'0'}等级</span>
                     </div>
                     {/* <div className="text">{this.state.levelupF[i].user_type != '1'?'网B':'网A'}</div> */}
                     <div className="text index_follow" data-id={this.state.levelupF[i].id} onClick={this.onFollow}>
                         <div className="level_img">
                             <img src={this.state.levelupF[i].status != '1'?follow:follow_n} alt=""/>
                         </div>
-                        <span>{this.state.levelupF[i].status != '1'?'已关注':'未关注'}</span>
+                        <span>{this.state.levelupF[i].status != '1'?this.state.levelupF[i].status != '3'?'待确认':'已关注':'未关注'}</span>
                     </div>
                 </div>
             </div>

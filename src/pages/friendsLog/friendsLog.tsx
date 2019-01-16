@@ -104,7 +104,7 @@ export class friendsLog extends React.Component<friendsLogProps, friendsLogState
     
         if (redirectToLogin) {
             const to = {
-                pathname: "/home?type=MyTab"
+                pathname: "/home"
             }
             return <Redirect to={to} />
         }

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { History, Location } from "history";
 import { Redirect, Link } from "react-router-dom";
 import { List, InputItem, Button, Toast, WhiteSpace } from "antd-mobile";
+import { UserStorage } from "../../storage/UserStorage";
 
 import phone from "../../assets/login_phone.png"
 import pwd from "../../assets/login_pwd.png"
@@ -82,6 +83,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                 ...this.state,
                 redirectToReferrer: true
             })
+            UserStorage.setCookie('type','HomeTab');
         }).catch( err => {
             const message = (err as Error).message;
             Toast.fail(message);
@@ -100,13 +102,6 @@ export class Login extends React.Component<LoginProps, LoginState> {
             }
             return <Redirect to={to} />
         }
-        // if (redirectToRegister) {
-        //     const to = {
-        //         pathname: "/register"
-        //     }
-        //     return <Redirect to={to} />
-        // }
-
         
         return (
             <div className="login-container">

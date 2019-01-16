@@ -225,7 +225,7 @@ function getlist(assToken) {
               $("#im_list").append(messageStr);
                 $(".friend_list").on("click",function (e) {
                     console.log(e)
-                window.location.href="http://www.shuaishou123.com/im/im.html?userid="+e.currentTarget.dataset.id+"&assToken="+e.currentTarget.dataset.token;    
+                window.location.href=false?"http://www.shuaishou123.com/im/im.html?userid="+e.currentTarget.dataset.id+"&assToken="+e.currentTarget.dataset.token:"https://dev170.weibanker.cn/chenjj/www/im/im.html?userid="+e.currentTarget.dataset.id+"&assToken="+e.currentTarget.dataset.token;    
                 })
         })
       }

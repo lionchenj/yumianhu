@@ -94,6 +94,24 @@ export class UserService extends ServiceBase {
             return resp
         }
     }
+    //获取用户信息
+    public async getUserInfoB(): Promise<model.User> {
+        const resp = await this.httpPost("getUserInfoB")
+        if(resp.data){
+            return resp.data as model.User
+        }else{
+            return resp
+        }
+    }
+    //获取用户信息
+    public async getUserInfoC(): Promise<model.User> {
+        const resp = await this.httpPost("getUserInfoC")
+        if(resp.data){
+            return resp.data as model.User
+        }else{
+            return resp
+        }
+    }
     //修改/忘记密码
     public async updatePassword(mobile: string, code: string, password: string): Promise<void> {
         const params = {
