@@ -1,0 +1,105 @@
+html {
+  overflow-x: hidden;
+  font-family: Helvetica;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  font-size: 625%;
+  width: 100%;
+  height: 100%;
+}
+body {
+  position: relative;
+  margin: 0;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0;
+  color: #212121;
+  background-color: #fff;
+  width: 100%;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
+}
+input {
+  font-size: 0.14rem;
+  border: none;
+}
+
+input::-moz-placeholder { color: #cccccc; }
+input::-webkit-input-placeholder { color: #cccccc; }
+input{outline:medium;}
+input { line-height: normal;border: 0;margin: 0;padding: 0}
+input { color: inherit; font: inherit; margin: 0; }
+html input[disabled] { cursor: default; }
+input::-moz-focus-inner { border: 0; padding: 0; }
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { height: auto; }
+
+.reg_head {
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ff4a43;
+  font-size: 18px;
+  color: #fff;
+}
+.reg_tab {
+  width: 33%;
+}
+.reg_back {
+  height: 100%;
+}
+.reg_back svg {
+  margin-left: 15px;
+}
+.reg_head_title {
+  text-align: center;
+}
+.reg_list {
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 92%;
+  padding: 0 4%;
+  height: 0.6rem;
+  font-size: 0.14rem;
+}
+.reg_list + .reg_list {
+  border-top: 1px solid #eeeeee;
+}
+.reg_title {
+  width: 25%;
+  font-size: 0.16rem;
+}
+.reg_input{
+  width: 50%;
+}
+.getCode {
+  text-align: center;
+  width: 21%;
+  border-radius: 0.05rem;
+  padding: 0.1rem;
+  background-color: #ff4a43;
+  color: #fff;
+}
+.reg_btn {
+  margin: 1rem auto;
+  width: 85%;
+}
+.reg_btn div {
+  text-align: center;
+  border-radius: 0.1rem;
+  padding: 0.1rem 0.4rem;
+  background-color: #ff4a43;
+  color: #fff;
+  font-size: 0.2rem;
+}
+.reg_error {
+  position: absolute;
+  top: 0.42rem;
+  left: 1.05rem;
+  font-size: 0.12rem;
+  color: red;
+}

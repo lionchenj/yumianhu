@@ -5,6 +5,7 @@ import './App.css';
 import { Switch, Route } from "react-router-dom";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { Login } from "./pages/login/Login";
+import { registerScan } from "./pages/registerScan/registerScan";
 import { registered } from "./pages/registered/registered";
 import { registeredB } from "./pages/registeredB/registeredB";
 import { registeredC } from "./pages/registeredC/registeredC";
@@ -18,6 +19,7 @@ import { friendListB } from "./pages/friendListB/friendListB";
 import { friendListC } from "./pages/friendListC/friendListC";
 import { datingrecord } from "./pages/datingrecord/datingrecord";
 import { share } from "./pages/share/share";
+import { download } from "./pages/download/download";
 import { friendsUn } from "./pages/friendsUn/friendsUn";
 import { friendsUnB } from "./pages/friendsUnB/friendsUnB";
 import { friendsUnC } from "./pages/friendsUnC/friendsUnC";
@@ -33,10 +35,11 @@ class App extends React.Component {
     return (
       <Switch>
           <PrivateRoute exact path="/" component={Home} />
-          <PrivateRoute exact path="/home" component={Home} />
-          <PrivateRoute exact path="/homeB" component={HomeB} />
-          <PrivateRoute exact path="/homeC" component={HomeC} />
+          <PrivateRoute exact path="/home1" component={Home} />
+          <PrivateRoute exact path="/home2" component={HomeB} />
+          <PrivateRoute exact path="/home3" component={HomeC} />
           <Route path="/login"  component={Login} />
+          <Route path="/registerScan"  component={registerScan} />
           <Route path="/registered"  component={registered} />
           <Route path="/registeredB"  component={registeredB} />
           <Route path="/registeredC"  component={registeredC} />
@@ -46,6 +49,7 @@ class App extends React.Component {
           <PrivateRoute path="/friendListB" component={friendListB} />
           <PrivateRoute path="/friendListC" component={friendListC} />
           <PrivateRoute path="/share" component={share} />
+          <PrivateRoute path="/download" component={download} />
           <PrivateRoute path="/datingrecord" component={datingrecord} />
           <PrivateRoute path="/friendsUn" component={friendsUn} />
           <PrivateRoute path="/friendsUnB" component={friendsUnB} />

@@ -16,10 +16,26 @@ body {
   color: #212121;
   background-color: #fff;
   width: 100%;
+  height: 100%;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   -webkit-text-size-adjust: 100% !important;
   text-size-adjust: 100% !important;
+}
+a:link {
+  color: #000000;
+  text-decoration: none;
+}
+a:active {
+  color: #000000;
+}
+a:visited {
+  color: #000000;
+  text-decoration: none;
+}
+a:hover {
+  color: #ff4a43;
+  text-decoration: none;
 }
 .im_navbar {
   width: 100%;
@@ -226,13 +242,164 @@ img {
 }
 .friend_count_msg {
   position: absolute;
-  top: 7px;
-  right: 20px;
+  top: 10px;
+  right: 30px;
   font-size: 16px;
 }
 .friend_count_online {
   position: absolute;
   top: 30px;
-  right: 20px;
+  right: 30px;
   font-size: 16px;
+}
+.im_tab .right {
+  text-align: right;
+  padding-right: 0.1rem;
+}
+.right_tab {
+  width: 0.2rem;
+  font-size: 0.14rem;
+  position: fixed;
+  right: 0;
+  top: 80px;
+  padding-top: 0.1rem;
+  text-align: center;
+  z-index: 11;
+  background: transparent;
+}
+.right_tab div {
+  padding-top: 0.05rem;
+}
+.close_a:hover {
+  color: #000000;
+  text-decoration: none;
+}
+.friends_title {
+  height: 0.2rem;
+  padding-top: 0.05rem;
+  padding-left: 0.1rem;
+  background: #eeeeee;
+  font-size: 0.18rem;
+}
+/* 群 */
+.group_checkbox {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  font-size: 16px;
+}
+.con {
+  width: 0.2rem;
+  height: 0.2rem;
+  border: 1px solid #000000;
+  border-radius: 50%;
+}
+.cos {
+  width: 0.2rem;
+  height: 0.2rem;
+  border: 1px solid #ff4a43;
+  background: #ff4a43;
+  border-radius: 50%;
+}
+.input_bg {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  top: 0;
+  left: 0;
+  z-index: 101;
+  overflow: hidden;
+}
+.input_phone {
+  position: absolute;
+  width: 60%;
+  padding: 0 0.1rem;
+  background: #fff;
+  top: 45%;
+  left: 16%;
+  z-index: 102;
+}
+.flex {
+  border-top: 1px solid #eeeeee;
+  display: flex;
+  align-items: center;
+  font-size: 0.18rem;
+}
+.flex div {
+  padding: 0.1rem 0;
+  text-align: center;
+  width: 50%;
+}
+.input_title {
+  font-size: 0.18rem;
+  margin: 0;
+  text-align: center;
+  text-indent: 0;
+}
+.none {
+  display: none;
+}
+/* 设置 */
+.user_list {
+  position: relative;
+  padding: 1%;
+  font-size: 0.16rem;
+  width: 23%;
+  height: 0.6rem;
+  margin: 0.15rem 0;
+  float: left;
+  text-align: center;
+}
+.user_list img {
+  width: 0.6rem;
+  height: 0.6rem;
+}
+.user_list .removeIcon {
+  position: absolute;
+  top: 0rem;
+  right: 0.1rem;
+  width: 0.15rem;
+  height: 0.15rem;
+  text-align: center;
+  line-height: 0.15rem;
+  border-radius: 50%;
+  background: #ff4a43;
+  color: #fff;
+}
+.user_setting {
+  position: fixed;
+  bottom: 5px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  height: 0.5rem;
+}
+
+.user_setting div {
+  border-radius: 5px;
+  font-size: 0.18rem;
+  line-height: 0.5rem;
+  margin: auto;
+  width: 90%;
+  height: 0.5rem;
+  background: #ff4a43;
+  color: #fff;
+}
+.addUser,
+.removeUser {
+  line-height: 0.6rem;
+  font-size: 1rem;
+}
+.change_name {
+  position: fixed;
+  bottom: 0.55rem;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  height: 0.5rem;
+}
+.change_name_input {
+  font-size: 0.18rem;
+  line-height: 0.5rem;
 }

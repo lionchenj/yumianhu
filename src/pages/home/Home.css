@@ -292,3 +292,31 @@ img {
   background: #ff4a43;
   color: #ffffff;
 }
+.input_phone_bg{
+  background: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 101;
+}
+.input_phone{
+  position: absolute;
+  width: 60%;
+  padding: 0 .1rem;
+  background: #fff;
+  top: 45%;
+  left: 16%;
+  z-index: 102;
+}
+.flex{
+  border-top:1px solid #eeeeee;
+  display: flex;
+  align-items: center;
+}
+.flex div{
+  padding: .1rem 0;
+  text-align: center;
+  width: 50%;
+}

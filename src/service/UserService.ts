@@ -24,12 +24,47 @@ export class UserService extends ServiceBase {
         }
         return false
     }
+    //关闭app
+    public async systemClose (): Promise<string> {
+        const resp = await this.httpPost("systemClose",{},false);
+        return resp.data;
+    }
     //获取手机验证码
     public async getMobileMassges(mobile: string): Promise<void> {
         const params = {
             mobile: mobile
         }
         return await this.httpPost("get_mobile_massges", params, false)
+    }
+    //检验上线
+    public async getMemberIsReferee (type: string): Promise<string> {
+        const params = {
+            type: type
+        }
+        const resp = await this.httpPost("getMemberIsReferee", params, true);
+        return resp.data.isreferee;
+    }
+    //添加上线
+    public async setMemberReferee (referee: string, type: string): Promise<any> {
+        const params = {
+            referee: referee,
+            type: type
+        }
+        const resp = await this.httpPost("setMemberReferee", params, true);
+        return resp.data;
+    }
+    //单独注册
+    public async registerScan(mobile: string, code: string, name: string, password: string, wechat_number: string, referee: string, type: string): Promise<void> {
+        const params = {
+            mobile: mobile,
+            password: password,
+            verification_code: code,
+            name: name,
+            wechat_number: wechat_number,
+            referee,
+            type
+        }
+        return await this.httpPost("registerScan", params, true)
     }
     //注册
     public async register(mobile: string, code: string, name: string, password: string, wechat_number:string): Promise<void> {
@@ -72,6 +107,7 @@ export class UserService extends ServiceBase {
             activation_code: activation_code
         }
         const resp = await this.httpPost("login", params, false)
+        UserStorage.setCookie('typepage',resp.data.type)
         const accessToken = resp.data.access_token
         ServiceBase.accessToken = accessToken
         UserStorage.saveAccessToken(accessToken)

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TabBar, List, NavBar, Modal, Carousel} from "antd-mobile";
+import { TabBar, List, NavBar, Modal, Carousel, InputItem} from "antd-mobile";
 import { History, Location } from "history";
 import { UserStorage } from "../../storage/UserStorage";
 import "./Home.css"
@@ -16,15 +16,16 @@ import my_friends from "../../assets/my_friends.png"
 import my_topass from "../../assets/my_topass.png"
 import my_setting from "../../assets/my_setting.png"
 import my_logout from "../../assets/my_logout.png"
+import my_datingrecord from "../../assets/my_datingrecord.png"
+import my_download from "../../assets/my_download.png"
+import my_get from "../../assets/my_get.png"
 import follow from "../../assets/follow.png"
 import follow_n from "../../assets/follow_n.png"
 import close from "../../assets/close.png"
 import king from "../../assets/my_VIP.png"
 import defaults from "../../assets/default.png"
 import banner from "../../assets/banner.png"
-
 import { UserService } from '../../service/UserService';
-
 // import { model } from '../../model/model';
 import { UIUtil } from '../../utils/UIUtil';
 
@@ -45,6 +46,7 @@ interface HomeState {
     isFollow: boolean,
     banners:any,
     imgHeight:string,
+    isSHow: boolean
 }
 const pageheight = window.innerHeight-95;
 const pagewidth = window.innerWidth;
@@ -56,6 +58,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
     min:number
     max:number
     interva: any
+    type: string
     constructor(props: HomeProps) {
         super(props)
          //   const dataSource = new ListView.DataSource({
@@ -72,6 +75,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
             showKey: false,
             isFollow: false,
             imgHeight:'1',
+            isSHow: false
         }
     }
     getBanner = () => {
@@ -119,7 +123,11 @@ export class Home extends React.Component<HomeProps, HomeState> {
             this.props.history.push("/friendsUn");
         } else if (index == 3) {
             // UIUtil.showInfo("暂未开通")
-            this.props.history.push("/share");
+            if (this.state.userInfo.level == 0) {
+                UIUtil.showInfo("暂未开通");
+            } else {
+                this.props.history.push("/share");
+            }
         }
     }
     onClose = () => {
@@ -183,6 +191,47 @@ export class Home extends React.Component<HomeProps, HomeState> {
                 ...this.state,
                 userInfo: userInfo
             })
+        UserStorage.setCookie('userInfo',JSON.stringify(userInfo));
+    }).catch ( err => {
+            console.log(err.errmsg)
+        })
+    }
+    //关闭输入框
+    closeSHow = () => {
+        this.setState({
+            isSHow:false
+        })
+    }
+    //获取输入框
+    onPhoneBlur = (val:string) => {
+        if(val.length != 11){
+            UIUtil.showInfo("请输入正确手机号");
+            return;
+        }
+        this.setState({
+            isSHow:false
+        })
+        UserService.Instance.setMemberReferee(val,this.type).then( data => {
+            console.log(data)
+            UIUtil.showInfo("添加成功");
+            this.props.history.push("/home"+this.type)
+        }).catch ( err => {
+            UIUtil.showInfo("请输入正确推荐人");            
+        })
+    }
+    //判断上线
+    getMemberIsReferee = (e:any) => {
+        this.type = e.currentTarget.dataset.type;
+        UserService.Instance.getMemberIsReferee(this.type).then( isreferee => {
+            if(isreferee == '0'){
+                this.setState({
+                    isSHow:true
+                })
+                console.log('isSHow')
+                return;
+            } else {
+                this.props.history.push("/home"+this.type)
+            }
         }).catch ( err => {
             console.log(err.errmsg)
         })
@@ -203,7 +252,7 @@ export class Home extends React.Component<HomeProps, HomeState> {
             theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
             }
         }
-        UserStorage.setCookie('typepage','');
+        UserStorage.setCookie('typepage','2');
         // let tab: "HomeTab"|"MyTab" = theRequest.type == 'MyTab'?'MyTab':'HomeTab';
         let tab: "HomeTab"|"MyTab" = UserStorage.getCookie('type') == 'MyTab'?'MyTab':'HomeTab'
         this.setState({
@@ -355,15 +404,9 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                     </Carousel>
                                 </div>
                                 <div className="tab">
-                                    <div className="" onClick={()=>{
-                                        // UIUtil.showInfo("暂未开通")
-                                        this.props.history.push("/homeB");
-                                        }}>店小二</div>
+                                    <div className="" data-type='2' onClick={this.getMemberIsReferee}>店小二</div>
                                     <div className="tabB">小掌柜</div>
-                                    <div className="" onClick={()=>{
-                                        // UIUtil.showInfo("暂未开通")
-                                        this.props.history.push("/homeC");
-                                        }}>大掌柜</div>
+                                    <div className="" data-type='3' onClick={this.getMemberIsReferee}>大掌柜</div>
                                 </div>    
                                 <List className="bg_w padding_tb">
                                     <div className="index_tab">
@@ -452,10 +495,6 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                         <List.Item
                                             thumb= {my_friends}
                                             arrow="horizontal"
-                                            // onClick={()=>{
-                                            //     const accessToken = UserStorage.getCookie("User.AccessTokenKey");
-                                            //     window.location.href="https://dev170.weibanker.cn/chenjj/www/im/list.html?assToken="+accessToken;
-                                            // }}
                                             onClick={()=>{this.props.history.push("/friendList")}}
                                             >我的好友
                                         </List.Item>
@@ -466,10 +505,22 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                             >待通过
                                         </List.Item>
                                         <List.Item
-                                            thumb= {my_topass}
+                                            thumb= {my_datingrecord}
                                             onClick={()=>{this.props.history.push("/friendsLog")}}
                                             arrow="horizontal"
                                             >交友记录
+                                        </List.Item>
+                                        <List.Item
+                                            thumb= {my_download}
+                                            onClick={()=>{UIUtil.showInfo("敬请期待");}}
+                                            arrow="horizontal"
+                                            >商城
+                                        </List.Item>
+                                        <List.Item
+                                            thumb= {my_get}
+                                            onClick={()=>{this.props.history.push("/download")}}
+                                            arrow="horizontal"
+                                            >时空夺宝
                                         </List.Item>
                                         <List.Item
                                             thumb= {my_setting}
@@ -506,6 +557,16 @@ export class Home extends React.Component<HomeProps, HomeState> {
                                 {list}
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div className={this.state.isSHow?'input_phone_bg':'none'} onClick={this.closeSHow}></div>
+                <div className={this.state.isSHow?'input_phone':'none'}>
+                    <List className="content-item-border">
+                        <InputItem name="phone" type="number" maxLength={11} placeholder={"请输入手机号"} onBlur={this.onPhoneBlur}>推荐人</InputItem>
+                    </List>
+                    <div className="flex">
+                        <div className="confirm">确定</div>
+                        <div className="close" onClick={this.closeSHow}>取消</div>
                     </div>
                 </div>
             </div>

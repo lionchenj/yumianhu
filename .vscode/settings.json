@@ -1,3 +1,22 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "macros": {
+        "end_semicolon": [ // 末尾加分号
+            "cursorLineEnd",
+            {
+                "command": "type",
+                "args": {
+                    "text": ";"
+                }
+            },
+        ],
+        "end_colon": [ // 末尾加冒号
+            "cursorLineEnd",
+            { "command": "type",
+                "args": {
+                    "text": ":"
+                }
+            },
+        ],
+    }
 }

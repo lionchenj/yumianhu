@@ -1,4 +1,5 @@
 let token = "",
+  assToken = "",
   userid = "",
   me_head_imgurl = "",
   me_name = "",
@@ -6,11 +7,7 @@ let token = "",
   user_name = "",
   UnreadCount = [];
 let UnreadCounts = getCookie();
-let api_url = false ? 
-              'http://www.shuaishou123.com/sszg/' 
-              : 
-              'https://dev170.weibanker.cn/hongjh/www/yumianhu/';
-
+let api_url = api;
 UnreadCount = JSON.parse(UnreadCounts)||[];
   function frontOneHour(fmt) {
     var currentTime = new Date(new Date().getTime());
@@ -49,6 +46,8 @@ UnreadCount = JSON.parse(UnreadCounts)||[];
     }
   }
   userid = theRequest.userid;
+  assToken = theRequest.assToken;
+  
   $.ajax({
     type: "POST",
     url:
@@ -61,7 +60,6 @@ UnreadCount = JSON.parse(UnreadCounts)||[];
           "http://www.shuaishou123.com/index.html";
         return;
       }
-      console.log(data.data.token);
       token = data.data.token;
       RongIMLib.RongIMClient.init("3argexb63quqe");
       RongIMClient.setConnectionStatusListener({
@@ -94,7 +92,7 @@ UnreadCount = JSON.parse(UnreadCounts)||[];
         // 接收到的消息
         onReceived: function (message) {
             console.log('xxxxxxxxxxx')
-            var news_id=message.senderUserId;
+            var news_id=message.targetId;
             $("#im_list").html('');
             getlist(theRequest.assToken);
             // 判断消息类型
@@ -102,7 +100,6 @@ UnreadCount = JSON.parse(UnreadCounts)||[];
                 case RongIMClient.MessageType.TextMessage:
                     // message.content.content => 消息内容
                     UnreadCount.push({id:news_id, content:message.content.content, type:'text',time:frontOneHour('hh:mm:ss',message.sentTime)});
-                    console.log(message.content.content)
                     break;
                 case RongIMClient.MessageType.VoiceMessage:
                     // 对声音进行预加载                
@@ -183,52 +180,102 @@ UnreadCount = JSON.parse(UnreadCounts)||[];
   });
 })();
 
+//群列表
+function getGrouplist(assToken) {
+  $.ajax({
+    type: "POST",
+    url: api_url + "api?url=userGroupLists",
+    data: { access_token: assToken },
+    dataType: "json",
+    success: function(res) {
+      let list = res.data;
+      console.log('list')
+      console.log(res.data)
+      if (list.length != 0) {
+        for(let i in list){
+          let count = 0;
+          for(let j of UnreadCount){
+              if(list[i].groupid == j.id){
+                  count = 1;
+              }
+          }
+          console.log(list[i])
+            var messageStr =
+              `<div class="friend_list group_go" data-name=${list[i].group_name} data-id=${list[i].groupid} data-token=${assToken}>
+                  <div class="friends_info">
+                      <div class="name">${list[i].group_name}</div>
+                  </div>
+                  <div class="friends_info">
+                    <div class="friend_count_msg">${count==0?'':'新留言'}</div>
+                  </div>
+              </div>`;
+            $("#im_list").prepend(messageStr);
+            $(".group_go").on("click",function (e) {
+                console.log(e)
+            window.location.href=goim?"http://www.shuaishou123.com/im/groupIm.html?name="+e.currentTarget.dataset.name+"&groupID="+e.currentTarget.dataset.id+"&assToken="+e.currentTarget.dataset.token+"&type=C":"https://dev170.weibanker.cn/chenjj/www/im/groupIm.html?name="+e.currentTarget.dataset.name+"&groupID="+e.currentTarget.dataset.id+"&assToken="+e.currentTarget.dataset.token+"&type=C";    
+            })
+        }
+        var messageStr =`<div class="friends_title" ><a class="close_a" name="qun" href="javascript:void(0);">群</a></div>`
+        $("#im_list").prepend(messageStr);
+      }
+    }
+  });
+}
 //好友列表
-let friendsList = [];
 function getlist(assToken) {
   $.ajax({
     type: "POST",
     url: api_url + "api?url=myFriendsListRecordC",
     data: { access_token: assToken },
     dataType: "json",
-    success: function(data) {
-      let list = data.data;
+    success: function(res) {
+      let list = res.data;
+      console.log(res.data)
       let UnreadCounts = JSON.stringify(UnreadCount);
       setCookie('UnreadCount',UnreadCounts);
       if (list.length != 0) {
-        list.map((data)=>{
-            let count = 0;
-            for(let i of UnreadCount){
-                if(i.id == data.userid){
-                    count = 1;
-                }
-            }
+        for(let i in list){
+          console.log(list[i]||[])
+          if(!list[i]){
+            continue;
+          }
+            var messageStr =`<div class="friends_title" ><a class="close_a" name="${i}" href="javascript:void(0);">${i}</a></div>`
+            $("#im_list").append(messageStr);
+            for(let j of list[i]){
+              let count = 0;
+              for(let i of UnreadCount){
+                  if(i.id == j.userid){
+                      count = 1;
+                  }
+              }
             var messageStr =
-              `<div class="friend_list" data-id=${data.userid} data-token=${assToken}>
+              `<div class="friend_list" data-id=${j.userid} data-token=${assToken}>
                   <div class="head_img">
-                      <img src=${data.head_imgurl != ''?data.head_imgurl:"https://dev170.weibanker.cn/hongjh/www/yumianhu/data/Picture/2019-01-04/5c2edf1d41900.png"} />
+                      <img src=${j.head_imgurl != ''?j.head_imgurl:"https://dev170.weibanker.cn/hongjh/www/yumianhu/data/Picture/2019-01-04/5c2edf1d41900.png"} />
                   </div>
                   <div class="friends_info">
-                      <div class="name">${data.nickname}</div>
+                      <div class="name">${j.nickname}</div>
                       <div class="level">
                           <div class="level_img">
                               <img src="my_VIP.png" alt=""/>
                           </div>
-                          <span>${data.level}等级</span>
+                          <span>${j.level}等级</span>
                       </div>
                   </div>
                   <div class="friends_info">
                     <div class="friend_count_msg">${count==0?'':'新留言'}</div>
-                    <div class="friend_count_online">${data.online==0?'':'在线'}</div>
+                    <div class="friend_count_online">${j.online==0?'':'在线'}</div>
                   </div>
               </div>`;
-              $("#im_list").append(messageStr);
-                $(".friend_list").on("click",function (e) {
-                    console.log(e)
-                window.location.href=false?"http://www.shuaishou123.com/im/im.html?userid="+e.currentTarget.dataset.id+"&assToken="+e.currentTarget.dataset.token:"https://dev170.weibanker.cn/chenjj/www/im/im.html?userid="+e.currentTarget.dataset.id+"&assToken="+e.currentTarget.dataset.token;    
-                })
-        })
+            $("#im_list").append(messageStr);
+            $(".friend_list").on("click",function (e) {
+                console.log(e)
+            window.location.href=goim?"http://www.shuaishou123.com/im/im.html?userid="+e.currentTarget.dataset.id+"&assToken="+e.currentTarget.dataset.token:"https://dev170.weibanker.cn/chenjj/www/im/im.html?userid="+e.currentTarget.dataset.id+"&assToken="+e.currentTarget.dataset.token;    
+            })
+          }
+        }
       }
+      getGrouplist(assToken);
     }
   });
 }
@@ -239,12 +286,16 @@ function setCookie(name, value) {
     exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
     document.cookie = name + "=" + escape(value) + ";expires=" + exp.toUTCString();
   }
-  function getCookie() {
-    var arr,
-      reg = new RegExp("(^| )UnreadCount=([^;]*)(;|$)");
-    if ((arr = document.cookie.match(reg))) return unescape(arr[2]);
-    else return null;
-  }
-  $(".im_back").on("click", function() {
-    window.history.go(-1)
-  });
+function getCookie() {
+  var arr,
+    reg = new RegExp("(^| )UnreadCount=([^;]*)(;|$)");
+  if ((arr = document.cookie.match(reg))) return unescape(arr[2]);
+  else return null;
+}
+$(".im_back").on("click", function() {
+  window.history.go(-1)
+});
+
+$(".right").on("click", function() {
+  window.location.href = "group.html?token=" + assToken;
+});

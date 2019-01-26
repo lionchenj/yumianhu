@@ -8,11 +8,6 @@ import defaults from "../../assets/default.png"
 import { UserStorage } from "../../storage/UserStorage";
 import { Redirect } from "react-router-dom";
 import "./share.css"
-//判断手机系统
-var u = navigator.userAgent;
-var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-var typepage = '';
-
 interface shareProps {
     history: History
 }
@@ -22,10 +17,9 @@ interface shareState {
     redirectToLogin: boolean
     height: number
     refUrl: string
-
+    typepage: string
+    userinfo: any
 }
-let userinfoA = UserStorage.getCookie('userinfoA')||'';
-let userinfo = userinfoA?JSON.parse(userinfoA):{head_imgurl:defaults,nickname:'******'};
 const bodyHeight = (window.innerHeight/100 - 0.45) + 'rem';
 export class share extends React.Component<shareProps, shareState> {
 
@@ -34,7 +28,9 @@ export class share extends React.Component<shareProps, shareState> {
           this.state = {
             height:  document.documentElement.clientHeight - 200,
             redirectToLogin: false,
-            refUrl: 'https://copy.im/a/zhgfxt'
+            refUrl: '',
+            typepage: '2',
+            userinfo: []
           };
         
     }
@@ -47,19 +43,22 @@ export class share extends React.Component<shareProps, shareState> {
     }
 
     componentDidMount() {
-        if(isiOS){
-            this.setState({
-                refUrl: 'https://copy.im/a/zhgfxt'
-            })
-        }
+        let userinfoA = UserStorage.getCookie('userInfo')||'';
+        let userinfo = userinfoA?JSON.parse(userinfoA):{head_imgurl:defaults,nickname:'******'};
+        var typepage = UserStorage.getCookie('typepage')||'';
+        console.log('typepage'+typepage)
+        this.setState({
+            typepage: typepage,
+            userinfo:userinfo
+        })
+        console.log(this.state.refUrl)
     }
 
     public render() {
         const { redirectToLogin} = this.state
-        typepage = UserStorage.getCookie('typepage')||'';
         if (redirectToLogin) {
             const to = {
-                pathname: "/home"+typepage
+                pathname: "/home"+this.state.typepage
             }
             return <Redirect to={to} />
         }
@@ -72,11 +71,11 @@ export class share extends React.Component<shareProps, shareState> {
                 </NavBar>
                 <div style={{height:bodyHeight,background:'#FF4A43'}}>
                 <div className="share_img">
-                    <img className="share_head" src={userinfo.head_imgurl} alt=""/>
-                    <div className="share_name">{userinfo.nickname}</div>
+                    <img className="share_head" src={this.state.userinfo.head_imgurl} alt=""/>
+                    <div className="share_name">{this.state.userinfo.nickname}</div>
                     <img src={share_bg} alt=""/>
                     <div className="QR_code">
-                        <QRCode value={this.state.refUrl} size={178} />
+                        <QRCode value={'http://www.shuaishou123.com/im/registeredX.html?type='+this.state.typepage+'&referee='+this.state.userinfo.mobile} size={178} />
                     </div>
                     {/* <img className="QR_code" src={QR_code} alt=""/> */}
                 </div>

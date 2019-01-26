@@ -6,7 +6,7 @@ let token = "",
   user_name = "",
   ishasMsg = true,
   oldLog = [];
-let api_url = false ? 'http://www.shuaishou123.com/sszg/' : 'https://dev170.weibanker.cn/hongjh/www/yumianhu/'
+let api_url = api;
 function frontOneHour(fmt) {
   var currentTime = new Date(new Date().getTime());
   var o = {
@@ -122,9 +122,7 @@ function frontOneHour_send (fmt,time) {
                                       </div>
                                       <div class="im_me_talk">
                                           <div class="im_user_name">${user_name}<span>${frontOneHour_send('yyyy年MM月dd日 hh:mm',message.sentTime)}</span></div>
-                                          <div class="im_user_text">${
-                                            message.content.content
-                                          }</div>
+                                          <div class="im_user_text">${ message.content.content }</div>
                                       </div>
                                   </div>`;
             $(".im_dialogue").append(messageStr);
@@ -136,9 +134,7 @@ function frontOneHour_send (fmt,time) {
                                       </div>
                                       <div class="im_me_talk">
                                           <div class="im_user_name">${user_name}<span>${frontOneHour_send('yyyy年MM月dd日 hh:mm',message.sentTime)}</span></div>
-                                          <div class="im_user_upimg"><img src="${
-                                            message.content.imageUri
-                                          }"></div>                                          
+                                          <div class="im_user_upimg"><img src="${ message.content.imageUri }"></div>                                          
                                       </div>
                                   </div>`;
             $(".im_dialogue").append(messageStr);
@@ -390,9 +386,7 @@ function getOldLog() {
                                       </div>
                                       <div class="im_me_talk">
                                           <div class="im_user_name">${user_name}<span>${frontOneHour_send('yyyy年MM月dd日 hh:mm',data.sentTime)}</span></div>
-                                          <div class="im_user_text">${
-                                            data.content.content
-                                          }</div>
+                                          <div class="im_user_text">${ data.content.content }</div>
                                       </div>
                                   </div>`;
           }
@@ -404,9 +398,7 @@ function getOldLog() {
                                       </div>
                                       <div class="im_me_talk">
                                           <div class="im_user_name">${user_name}<span>${frontOneHour_send('yyyy年MM月dd日 hh:mm',data.sentTime)}</span></div>
-                                          <div class="im_user_upimg"><img src="${
-                                            data.content.content
-                                          }"></div>                                          
+                                          <div class="im_user_upimg"><img src="${ data.content.content }"></div>                                          
                                       </div>
                                   </div>`;
           }
@@ -415,7 +407,7 @@ function getOldLog() {
             messageStr += `<div class="im_me">
                     <div class="im_me_talk">
                     <div class="im_me_name"><span>${frontOneHour_send('yyyy年MM月dd日 hh:mm',data.sentTime)}</span>${me_name}</div>
-                    <div class="im_me_text">${data.content.content}</div>
+                    <div class="im_me_text">${ data.content.content }</div>
                 </div>
                 <div class="im_me_img">
                     <img src="${me_head_imgurl}" alt="">
@@ -425,9 +417,7 @@ function getOldLog() {
             messageStr += `<div class="im_me">
                               <div class="im_me_talk">
                               <div class="im_me_name"><span>${frontOneHour_send('yyyy年MM月dd日 hh:mm',data.sentTime)}</span>${me_name}</div>
-                              <div class="im_me_upimg"><img src="${
-                                data.content.imageUri
-                              }"></div>
+                              <div class="im_me_upimg"><img src="${ data.content.imageUri }"></div>
                           </div>
                           <div class="im_me_img">
                               <img src="${me_head_imgurl}" alt="">
@@ -463,9 +453,7 @@ function setUnreadCount() {
                                   </div>
                                   <div class="im_me_talk">
                                       <div class="im_user_name">${user_name}<span>${data.time}</span></div>
-                                      <div class="im_user_text">${
-                                        data.content
-                                      }</div>
+                                      <div class="im_user_text">${ data.content }</div>
                                   </div>
                               </div>`;
         $(".im_dialogue").append(messageStr);
@@ -477,9 +465,7 @@ function setUnreadCount() {
                                   </div>
                                   <div class="im_me_talk">
                                       <div class="im_user_name">${user_name}<span>${data.time}</span></div>
-                                      <div class="im_user_upimg"><img src="${
-                                        data.content
-                                      }"></div>                                          
+                                      <div class="im_user_upimg"><img src="${ data.content }"></div>                                          
                                   </div>
                               </div>`;
         $(".im_dialogue").append(messageStr);
@@ -489,7 +475,7 @@ function setUnreadCount() {
     }
   })
   let lists = JSON.stringify(list);
-  setCookie('UnreadCount',lists)
+  setCookie('UnreadCount',lists);
   var div = document.getElementById("im_dialogue");
   div.scrollTop = div.scrollHeight;
 }
@@ -506,5 +492,5 @@ function getCookie() {
   else return null;
 }
 $(".im_back").on("click", function() {
-  window.history.go(-1)
+  window.history.go(-1);
 });

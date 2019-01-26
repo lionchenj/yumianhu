@@ -171,7 +171,7 @@ export class registeredC extends React.Component<Props, registeredCState> {
     
         if (redirectToLogin) {
             const to = {
-                pathname: "/homeC"
+                pathname: "/home3"
             }
             return <Redirect to={to} />
         }

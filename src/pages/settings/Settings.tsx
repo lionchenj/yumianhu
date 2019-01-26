@@ -3,7 +3,7 @@ import { NavBar, Icon, List} from "antd-mobile";
 import { Redirect } from "react-router-dom";
 import { History } from "history";
 import "./Settings.css"
-// import { UserStorage } from "../../storage/UserStorage";
+import { UserStorage } from "../../storage/UserStorage";
 
 interface SettingsProps {
     history: History,
@@ -33,9 +33,10 @@ export class Settings extends React.Component<SettingsProps, SettingsState> {
     }
 
     public render() {
+        let typepage = UserStorage.getCookie('typepage')||'';
         if (this.state.redirectToLogin) {
             const to = {
-                pathname: "/home"
+                pathname: "/home"+typepage
             }
             return <Redirect to={to} />
         }

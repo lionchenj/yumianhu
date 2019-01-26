@@ -6,12 +6,7 @@ import { UserStorage } from "../../storage/UserStorage";
 
 import phone from "../../assets/login_phone.png"
 import pwd from "../../assets/login_pwd.png"
-
-// import { UserStorage } from "../../storage/UserStorage";
-// import  createForm  from "rc-form";
-
 import bg from "../../assets/login_bg.png"
-
 
 import './Login.css'
 import { Util } from '../../utils/Util';
@@ -26,7 +21,8 @@ export interface LoginProps {
 
 interface LoginState {
     redirectToReferrer: boolean,
-    activate: boolean
+    activate: boolean,
+    closeApp: string
 }
 
 export class Login extends React.Component<LoginProps, LoginState> {
@@ -37,7 +33,8 @@ export class Login extends React.Component<LoginProps, LoginState> {
         super(props)
         this.state = {
             redirectToReferrer: false,
-            activate: false
+            activate: false,
+            closeApp: '1'
         }
     }
 
@@ -78,27 +75,45 @@ export class Login extends React.Component<LoginProps, LoginState> {
             Toast.info(passwordInfo)
             return
         }
-        UserService.Instance.login(trimPhone, trimPassword, this.activation).then( ()=>{
+        UserService.Instance.login(trimPhone, trimPassword, this.activation).then( (res)=>{
             this.setState({
                 ...this.state,
                 redirectToReferrer: true
             })
-            UserStorage.setCookie('type','HomeTab');
         }).catch( err => {
             const message = (err as Error).message;
             Toast.fail(message);
         })
     }
 
-    public componentDidCatch(error: any, info: any) {
-        console.log("componentDidCatch", error, info)
+    public componentDidMount() {
+        UserService.Instance.systemClose().then( (res)=>{
+                this.setState({
+                    ...this.state,
+                    closeApp: res
+                })
+        }).catch( err => {
+            
+        })
     }
 
     public render() {
-        const { redirectToReferrer} = this.state
+        const { redirectToReferrer, closeApp} = this.state;
+        if(closeApp === '1'){
+            return (
+                <div className='closeAPP_bg'>
+                    <div className="login_bg">
+                      <img src={bg} alt=""/>
+                    </div>
+                    <div className='closeAPP'>暂停维护</div>
+                </div>
+            )
+        }
         if (redirectToReferrer) {
+            UserStorage.setCookie('type','HomeTab');
+            const typepage = UserStorage.getCookie('typepage');
             const to = {
-                pathname: "/home"
+                pathname: "/home"+typepage
             }
             return <Redirect to={to} />
         }
@@ -120,6 +135,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                         </List.Item>
                         </List>
                         <List className="login_forget">
+                            <Link to="/registerScan" className="registered-link" >立即注册</Link>
                             <Link to="/forget_pwd" className="forget-link" >忘记密码？</Link>
                         </List>
                         <WhiteSpace size="lg" />
@@ -128,11 +144,10 @@ export class Login extends React.Component<LoginProps, LoginState> {
                         <WhiteSpace size="lg" />
                         <div className="login_button">
                             <List className="content-item">
-                                <Button type="ghost" className="login_confirm" onClick={this.onSubmit}>登陆</Button>
+                                <Button type="ghost" className="login_confirm" onClick={this.onSubmit}>登录</Button>
                             </List>
                         </div>
                     </div>
-                    
             </div>
 
         )

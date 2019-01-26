@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="registeredX.css"
+    />
+  </head>
+  <body>
+    <div class="reg_head">
+      <div class="reg_tab reg_back"></div>
+      <div class="reg_head_title reg_tab">注册</div>
+      <div class="reg_tab"></div>
+    </div>
+    <div class="reg_content">
+      <div class="reg_list">
+        <div class="reg_title">姓名</div>
+        <div class="reg_input">
+          <input class="name" type="text" placeholder="请输入姓名" />
+        </div>
+        <div class="reg_error n_error"></div>
+      </div>
+      <div class="reg_list">
+        <div class="reg_title">手机号码</div>
+        <div class="reg_input">
+          <input
+            class="mobile"
+            type="number"
+            maxlength="11"
+            placeholder="请输入手机号码"
+          />
+        </div>
+        <div class="reg_error m_error"></div>
+    </div>
+      <div class="reg_list">
+        <div class="reg_title">验证码</div>
+        <div class="reg_input">
+          <input class="code" type="number" placeholder="请输入验证码" />
+        </div>
+        <div class="getCode">获取验证码</div>
+        <div class="reg_error c_error"></div>
+    </div>
+      <div class="reg_list">
+        <div class="reg_title">微信号</div>
+        <div class="reg_input">
+          <input class="wechat" type="text" placeholder="请输入微信号" />
+        </div>
+        <div class="reg_error w_error"></div>
+    </div>
+      <!-- <div class="reg_list">
+        <div class="reg_title">推荐人</div>
+        <div class="reg_input">
+          <input
+            class="mobileUp"
+            type="number"
+            maxlength="11"
+            placeholder="请输入推荐人手机号码"
+          />
+        </div>
+        <div class="reg_error mu_error"></div>
+    </div> -->
+      <div class="reg_list">
+        <div class="reg_title">登录密码</div>
+        <div class="reg_input">
+          <input
+            class="password"
+            type="password"
+            placeholder="请输入登录密码"
+          />
+        </div>
+        <div class="reg_error p_error"></div>
+    </div>
+    </div>
+    <div class="reg_btn"><div>注册</div></div>
+    <script src="jquery-1.11.3.min.js"></script>
+    <script src="api.js"></script>
+    <script src="registeredX.js"></script>
+  </body>
+</html>

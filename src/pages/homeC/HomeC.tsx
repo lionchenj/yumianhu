@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TabBar, List, NavBar, Modal, Carousel} from "antd-mobile";
+import { TabBar, List, NavBar, Modal, Carousel, InputItem} from "antd-mobile";
 import { History, Location } from "history";
 import { UserStorage } from "../../storage/UserStorage";
 
@@ -15,6 +15,9 @@ import my_friends from "../../assets/my_friends.png"
 import my_topass from "../../assets/my_topass.png"
 import my_setting from "../../assets/my_setting.png"
 import my_logout from "../../assets/my_logout.png"
+import my_datingrecord from "../../assets/my_datingrecord.png"
+import my_download from "../../assets/my_download.png"
+import my_get from "../../assets/my_get.png"
 import follow from "../../assets/follow.png"
 import follow_n from "../../assets/follow_n.png"
 import close from "../../assets/close.png"
@@ -44,6 +47,7 @@ interface HomeCState {
     isFollow: boolean,
     banners:any,
     imgHeight:string,
+    isSHow: boolean
 }
 const pageheight = window.innerHeight-95;
 export class HomeC extends React.Component<HomeCProps, HomeCState> {
@@ -54,6 +58,7 @@ export class HomeC extends React.Component<HomeCProps, HomeCState> {
     min:number
     max:number
     interva: any
+    type: string
     constructor(props: HomeCProps) {
         super(props)
          //   const dataSource = new ListView.DataSource({
@@ -70,6 +75,7 @@ export class HomeC extends React.Component<HomeCProps, HomeCState> {
             showKey: false,
             isFollow: false,
             imgHeight:'1',
+            isSHow: false
         }
     }
     getBanner = () => {
@@ -116,7 +122,11 @@ export class HomeC extends React.Component<HomeCProps, HomeCState> {
         } else if (index == 2) {
             this.props.history.push("/friendsUnC");
         } else if (index == 3) {
-            this.props.history.push("/share");
+            if (this.state.userInfo.level == 0) {
+                UIUtil.showInfo("暂未开通");
+            } else {
+                this.props.history.push("/share");
+            }
         }
     }
     onClose = () => {
@@ -179,6 +189,47 @@ export class HomeC extends React.Component<HomeCProps, HomeCState> {
                 ...this.state,
                 userInfo: userInfo
             })
+        UserStorage.setCookie('userInfo',JSON.stringify(userInfo));
+    }).catch ( err => {
+            console.log(err.errmsg)
+        })
+    }
+    //关闭输入框
+    closeSHow = () => {
+        this.setState({
+            isSHow:false
+        })
+    }
+    //获取输入框
+    onPhoneBlur = (val:string) => {
+        if(val.length != 11){
+            UIUtil.showInfo("请输入正确手机号");
+            return;
+        }
+        this.setState({
+            isSHow:false
+        })
+        UserService.Instance.setMemberReferee(val,this.type).then( data => {
+            console.log(data)
+            UIUtil.showInfo("添加成功");
+            this.props.history.push("/home"+this.type)
+        }).catch ( err => {
+            UIUtil.showInfo("请输入正确推荐人");            
+        })
+    }
+    //判断上线
+    getMemberIsReferee = (e:any) => {
+        this.type = e.currentTarget.dataset.type;
+        UserService.Instance.getMemberIsReferee(this.type).then( isreferee => {
+            if(isreferee == '0'){
+                this.setState({
+                    isSHow:true
+                })
+                console.log('isSHow')
+                return;
+            } else {
+                this.props.history.push("/home"+this.type)
+            }
         }).catch ( err => {
             console.log(err.errmsg)
         })
@@ -194,7 +245,7 @@ export class HomeC extends React.Component<HomeCProps, HomeCState> {
         this.setState({
             selectedTab: tab
         })
-        UserStorage.setCookie('typepage','C');
+        UserStorage.setCookie('typepage','3');
         this.getBanner();
         this.getUserInfo();
     }
@@ -341,8 +392,8 @@ export class HomeC extends React.Component<HomeCProps, HomeCState> {
                                     </Carousel>
                                 </div>
                                 <div className="tab">
-                                    <div className="" onClick={()=>{this.props.history.push("/homeB");}}>店小二</div>
-                                    <div className="" onClick={()=>{this.props.history.push("/home");}}>小掌柜</div>
+                                    <div className="" data-type="2" onClick={this.getMemberIsReferee}>店小二</div>
+                                    <div className="" data-type="1" onClick={this.getMemberIsReferee}>小掌柜</div>
                                     <div className="tabC">大掌柜</div>
                                 </div>    
                                 <List className="bg_w padding_tb">
@@ -441,10 +492,22 @@ export class HomeC extends React.Component<HomeCProps, HomeCState> {
                                             >待通过
                                         </List.Item>
                                         <List.Item
-                                            thumb= {my_topass}
+                                            thumb= {my_datingrecord}
                                             onClick={()=>{this.props.history.push("/friendsLogC")}}
                                             arrow="horizontal"
                                             >交友记录
+                                        </List.Item>
+                                        <List.Item
+                                            thumb= {my_download}
+                                            onClick={()=>{UIUtil.showInfo("敬请期待");}}
+                                            arrow="horizontal"
+                                            >商城
+                                        </List.Item>
+                                        <List.Item
+                                            thumb= {my_get}
+                                            onClick={()=>{this.props.history.push("/download")}}
+                                            arrow="horizontal"
+                                            >时空夺宝
                                         </List.Item>
                                         <List.Item
                                             thumb= {my_setting}
@@ -480,6 +543,17 @@ export class HomeC extends React.Component<HomeCProps, HomeCState> {
                             <div className="index_modal_lists">
                                 {list}
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={this.state.isSHow?'input_phone_bg':'none'} onClick={this.closeSHow}>
+                    <div className='input_phone'>
+                        <List className="content-item-border">
+                            <InputItem name="phone" type="number" maxLength={11} placeholder={"请输入手机号"} onBlur={this.onPhoneBlur}>推荐人</InputItem>
+                        </List>
+                        <div className="flex">
+                            <div className="confirm">确定</div>
+                            <div className="close" onClick={this.closeSHow}>取消</div>
                         </div>
                     </div>
                 </div>

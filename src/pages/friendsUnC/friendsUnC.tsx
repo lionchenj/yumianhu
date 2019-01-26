@@ -118,7 +118,7 @@ export class friendsUnC extends React.Component<friendsUnCProps, friendsUnCState
     
         if (redirectToLogin) {
             const to = {
-                pathname: "/homeC"
+                pathname: "/home3"
             }
             return <Redirect to={to} />
         }

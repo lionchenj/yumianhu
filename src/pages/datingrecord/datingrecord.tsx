@@ -3,6 +3,7 @@ import * as React from 'react';
 import { NavBar, Icon, } from "antd-mobile";
 import { History } from "history";
 import { Redirect } from "react-router-dom";
+import { UserStorage } from "../../storage/UserStorage";
 
 // import { UserService } from '../../service/UserService';ListView,Tabs
 // import { UIUtil } from '../../utils/UIUtil';
@@ -73,10 +74,10 @@ export class datingrecord extends React.Component<datingrecordProps, datingrecor
 
     public render() {
         const { redirectToLogin} = this.state
-    
+        let typepage = UserStorage.getCookie('typepage')||'';    
         if (redirectToLogin) {
             const to = {
-                pathname: "/home"
+                pathname: "/home"+typepage
             }
             return <Redirect to={to} />
         }

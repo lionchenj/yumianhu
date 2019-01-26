@@ -74,10 +74,23 @@ export abstract class ServiceBase {
             throw new Error(`服务器错误。(status:${resp.status},statusText:${resp.statusText})`)
         }
         const errCode: number = parseInt(resp.data.errno)
-        if (errCode !== 0) {
-            if(errCode == 401){
-                UserStorage.clearAccessToken();
+        if (resp.data.errmsg=="access_token不合法或已过期"){
+            if(UserStorage.getAccessToken()){
+                const accessToken = UserStorage.getAccessToken()
+                if (accessToken) {
+                    ServiceBase.accessToken = accessToken
+                }                
             }
+        }     
+        else if (resp.data.errmsg=="缺少参数：access_token"){
+            if(UserStorage.getAccessToken()){
+                const accessToken = UserStorage.getAccessToken()
+                if (accessToken) {
+                    ServiceBase.accessToken = accessToken
+                }                
+            }
+        }    
+        else if (resp.data.errmsg!="access_token不合法或已过期"&&errCode !== 0) {
             const errMsg = resp.data.errmsg
             throw new ApiError(errCode, errMsg)
         }
